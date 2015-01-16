@@ -1,0 +1,57 @@
+<?php
+
+namespace Tafrika\UserBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+
+/**
+ * User
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Tafrika\UserBundle\Entity\UserRepository")
+ */
+class User extends BaseUser
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="mySubscription")
+     */
+    private $subscribedWithMe;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="subscribedWithMe")
+     * @ORM\JoinTable(name="subscribed",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="subscription_user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $mySubscription;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->addRoles("ROLE_USER");
+        $this->mySubscription = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subscribedWithMe = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

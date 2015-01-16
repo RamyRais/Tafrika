@@ -1,0 +1,7 @@
+parameters:
+#    tafrika_post.example.class: Tafrika\PostBundle\Example
+
+services:
+#    tafrika_post.example:
+#        class: %tafrika_post.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,7 @@
+parameters:
+#    tafrika_user.example.class: Tafrika\UserBundle\Example
+
+services:
+#    tafrika_user.example:
+#        class: %tafrika_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

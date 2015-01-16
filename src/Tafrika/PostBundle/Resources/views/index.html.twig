@@ -1,0 +1,26 @@
+{% extends "::layout.html.twig" %}
+{% block body %}
+{% for post in posts %}
+
+    {% if post._type == "STATUS" %}
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ post.title }}</div>
+            <div class="panel-body">
+                {{ post.content }}
+            </div>
+        </div>
+    {% endif %}
+    {% if post._type == "VIDEO" %}
+        video : {{ post.title }}</br>
+    {% endif %}
+    {% if post._type == "IMAGE" %}
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ post.title }}</div>
+            <div class="panel-body">
+               <img src="{{ post.getWebPath }}" alt="{{ post.title }}" height="500" width="454">
+            </div>
+        </div>
+        </br>
+    {% endif %}
+{% endfor %}
+{% endblock %}

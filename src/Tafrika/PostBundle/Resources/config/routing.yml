@@ -1,0 +1,15 @@
+tafrika_index:
+    path: /
+    defaults: { _controller: TafrikaPostBundle:General:Index }
+
+status_add:
+    path: /status/add
+    defaults: { _controller: TafrikaPostBundle:Status:addStatus }
+
+video_add:
+    path: /video/add
+    defaults: { _controller: TafrikaPostBundle:Video:addVideo }
+
+image_add:
+    path: /image/add
+    defaults: { _controller: TafrikaPostBundle:Image:addImage }

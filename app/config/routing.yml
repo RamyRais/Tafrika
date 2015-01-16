@@ -1,0 +1,11 @@
+tafrika_post:
+    resource: "@TafrikaPostBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tafrika_user:
+    resource: "@TafrikaUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
