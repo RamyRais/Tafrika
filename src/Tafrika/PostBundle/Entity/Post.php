@@ -67,6 +67,11 @@ class Post
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Tafrika\PostBundle\Entity\Comment", mappedBy="post")
+     */
+    private $comments;
+
     public function __construct() {
         $this->likes = 0;
         $this->createdAt = new \DateTime('now',new \DateTimeZone("UTC"));
@@ -178,5 +183,38 @@ class Post
     {
         $c = get_called_class();
         return $c::TYPE;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Tafrika\PostBundle\Entity\Comment $comments
+     * @return Post
+     */
+    public function addComment($comments)
+    {
+        $this->comments->add($comments);
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Tafrika\PostBundle\Entity\Comment $comments
+     */
+    public function removeComment($comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }
