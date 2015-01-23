@@ -11,6 +11,8 @@ namespace Tafrika\PostBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Tafrika\PostBundle\Entity\Status;
 use Tafrika\PostBundle\Form\StatusType;
+use Tafrika\PostBundle\Form\StatusEditType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class StatusController extends Controller{
 
@@ -38,5 +40,46 @@ class StatusController extends Controller{
         return $this->render('TafrikaPostBundle:Status:create.html.twig',array(
             'form'=>$form->createView()
         ));
+    }
+
+    /**
+     * @ParamConverter("status", options={"mapping": {"status_id": "id"}})
+     */
+    public function showStatusAction(Status $status){
+        return $this->render('TafrikaPostBundle:Status:show.html.twig',array(
+            'status'=>$status
+        ));
+    }
+
+    /**
+     * @ParamConverter("status", options={"mapping": {"status_id": "id"}})
+     */
+    public function editStatusAction(Status $status){
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirect($this->generateUrl('status_show', array('status_id'=>$status->getId())));
+        } else{
+            $user = $this->get('security.context')->getToken()->getUser();
+            if($user != $status->getUser()){
+                return $this->redirect($this->generateUrl('status_show', array('status_id'=>$status->getId())));
+
+            }
+        }
+        $form = $this->createForm(new StatusEditType, $status);
+        $request = $this->get('request');
+        if( $request->getMethod() == 'POST'){
+            $form->bind($request);
+            if($form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($status);
+                $em->flush();
+                return $this->redirect($this->generateUrl('status_show', array('status_id'=>$status->getId())));
+
+            }
+        }
+        return $this->render('TafrikaPostBundle:Status:edit.html.twig',array(
+            'form'=>$form->createView(),
+            'status'=>$status
+        ));
+
     }
 }
