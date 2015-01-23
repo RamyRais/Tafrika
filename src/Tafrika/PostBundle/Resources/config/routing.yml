@@ -6,6 +6,18 @@ status_add:
     path: /status/add
     defaults: { _controller: TafrikaPostBundle:Status:addStatus }
 
+status_show:
+    path: /status/{status_id}
+    defaults: { _controller: TafrikaPostBundle:Status:showStatus }
+    requirements:
+        status_id: \d+
+
+status_edit:
+    path: /status/{status_id}/edit
+    defaults: { _controller: TafrikaPostBundle:Status:editStatus }
+    requirements:
+        status_id: \d+
+
 video_add:
     path: /video/add
     defaults: { _controller: TafrikaPostBundle:Video:addVideo }
@@ -13,3 +25,15 @@ video_add:
 image_add:
     path: /image/add
     defaults: { _controller: TafrikaPostBundle:Image:addImage }
+
+image_show:
+    path: /image/{image_id}
+    defaults: { _controller: TafrikaPostBundle:Image:showImage }
+    requirements:
+        image_id: \d+
+
+image_edit:
+    path: /image/{image_id}/edit
+    defaults: { _controller: TafrikaPostBundle:Image:editImage }
+    requirements:
+        image_id: \d+
