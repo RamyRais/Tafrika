@@ -1,6 +1,8 @@
 tafrika_index:
-    path: /
-    defaults: { _controller: TafrikaPostBundle:General:Index }
+    path: /{page}
+    defaults: { _controller: TafrikaPostBundle:General:Index, page: 1 }
+    requirements:
+        page: \d+
 
 status_add:
     path: /status/add
@@ -21,6 +23,18 @@ status_edit:
 video_add:
     path: /video/add
     defaults: { _controller: TafrikaPostBundle:Video:addVideo }
+
+video_show:
+    path: /video/{video_id}
+    defaults: { _controller: TafrikaPostBundle:Video:showVideo }
+    requirements:
+        video_id: \d+
+
+video_edit:
+    path: /video/{video_id}
+    defaults: { _controller: TafrikaPostBundle:Video:editVideo }
+    requirements:
+        video_id: \d+
 
 image_add:
     path: /image/add

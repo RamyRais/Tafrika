@@ -68,3 +68,6 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Tafrika\UserBundle\Entity\User
+    registration:
+            form:
+                type: tafrika_user_registration

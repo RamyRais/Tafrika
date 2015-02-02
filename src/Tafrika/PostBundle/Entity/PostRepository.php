@@ -3,6 +3,7 @@
 namespace Tafrika\PostBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * PostRepository
@@ -12,4 +13,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
+    public function findFresh($postPerPage, $page){
+        if($page<1){
+            throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
+        }
+        $query = $this->createQueryBuilder('p');
+        $query->orderBy('p.createdAt','DESC');
+        $query->getQuery();
+        $query->setFirstResult( ($page - 1)* $postPerPage);
+        $query->setMaxResults($postPerPage);
+        return new Paginator($query);
+    }
 }

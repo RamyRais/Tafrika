@@ -1,26 +1,114 @@
 {% extends "::layout.html.twig" %}
+{% block body_javascripts %}
+    <div id="fb-root"></div>
+    <script src="{{ asset('js/FB_patage.js') }}"></script>
+{% endblock %}
 {% block body %}
-{% for post in posts %}
 
-    {% if post._type == "STATUS" %}
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ post.title }}</div>
-            <div class="panel-body">
-                {{ post.content }}
+<div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            {% for post in posts %}
+            {% if post._type == "STATUS" %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ path('status_show', {'status_id': post.id}) }}"> {{ post.title }}</a>
+                </div>
+                <div class="panel-body">
+                    {{ post.content }}
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-2">{{ post.likes }} likes</div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" id="like"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-2">
+                            <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    {% endif %}
-    {% if post._type == "VIDEO" %}
-        video : {{ post.title }}</br>
-    {% endif %}
-    {% if post._type == "IMAGE" %}
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ post.title }}</div>
-            <div class="panel-body">
-               <img src="{{ post.getWebPath }}" alt="{{ post.title }}" height="500" width="454">
+            {% elseif post._type == "VIDEO" %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ path('video_show', {'video_id':post.id}) }}">{{ post.title }}</a>
+                </div>
+                <div class="panel panel-body">
+                    <iframe width="550" height="454"
+                        src="{{ post.url }}">
+                    </iframe>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-2">{{ post.likes }} likes</div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-2">
+                            <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {% elseif post._type == "IMAGE" %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="{{ path('image_show', {'image_id':post.id}) }}">{{ post.title }}</a>
+                    </div>
+                    <div class="panel-body">
+                        <img src="{{ asset(post.getWebPath) }}" alt="{{ post.title }}" height="500" width="454">
+                    </div>
+                </div>
+            {% endif %}
+            {% endfor %}
+            <nav>
+                <ul class="pagination">
+                    {% if page>1 %}
+                    <li>
+                        <a href="{{ path('tafrika_index', {'page':page-1}) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if page-2 > 0 %}
+                    <li><a href="{{ path('tafrika_index', {'page':page-2}) }}">{{ page-2 }}</a></li>
+                    {% endif %}
+                    {% if page-1 > 0 %}
+                    <li><a href="{{ path('tafrika_index', {'page':page-1}) }}">{{ page-1 }}</a></li>
+                    {% endif %}
+                    <li class="active"><a href="#">{{ page }}</a></li>
+                        {% if page+1 <= pageNumber %}
+                            <li><a href="{{ path('tafrika_index', {'page':page+1}) }}">{{ page+1 }}</a></li>
+                        {% endif %}
+                        {% if page+2 <= pageNumber %}
+                            <li><a href="{{ path('tafrika_index', {'page':page+2}) }}">{{ page+2 }}</a></li>
+                        {% endif %}
+                    {% if page < pageNumber %}
+                    <li>
+                        <a href="{{ path('tafrika_index',{'page':page+1}) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
-        </br>
-    {% endif %}
-{% endfor %}
+</div>
 {% endblock %}
