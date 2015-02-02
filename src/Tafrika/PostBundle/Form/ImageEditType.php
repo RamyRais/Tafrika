@@ -33,6 +33,6 @@ class ImageEditType extends AbstractType
      */
     public function getName()
     {
-        return 'tafrika_postbundle_image';
+        return 'tafrika_postbundle_editimage';
     }
 }
