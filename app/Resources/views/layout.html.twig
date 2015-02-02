@@ -11,7 +11,8 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 </head>
 <body>
-    <nav class="navbar navbar-default">
+{% block body_javascripts %}{% endblock %}
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -24,6 +25,22 @@
                 <a class="navbar-brand navbar-right" href="#">تفريكة</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% if app.user %}
+                            <li><a href="{{ path('fos_user_profile_show') }}">بروفيلي</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}">انستو</a></li>
+                            {% else %}
+                            <li><a href="{{ path('fos_user_security_login') }}">تفضل بحذانا</a></li>
+                            <li><a href="{{ path('fos_user_registration_register') }}">أعمل بروفيل</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav  navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">تحميل
@@ -35,7 +52,7 @@
                             <li><a href="{{ path('video_add') }}">فيديو</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">فرشك</a></li>
+                    <li><a href="{{ path('tafrika_index') }}">فرشك</a></li>
                     <li><a href="#">لممو</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
@@ -46,6 +63,7 @@
     </nav>
 
 <div class="container-fluid">
+    </br></br></br>
     {% block body %}{% endblock %}
 </div>
 
