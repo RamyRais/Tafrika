@@ -2,6 +2,7 @@ parameters:
 #    tafrika_user.example.class: Tafrika\UserBundle\Example
 
 services:
-#    tafrika_user.example:
-#        class: %tafrika_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    tafrika_user.registration.form.type:
+        class: Tafrika\UserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: tafrika_user_registration }

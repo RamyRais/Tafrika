@@ -1,0 +1,60 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+    <div class="row">
+
+        <div class="col-md-9">
+            <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST"
+                  class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-5">
+                        {% if form_errors(form.username) %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form_errors(form.username, {'attr': {'class': 'alert alert-danger', 'role':'alert' } } ) }}</br>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-7">
+                        {{ form_widget(form.username, {'attr': {'class': 'form-control input-lg','placeholder':'المفرك  / username',
+                            'style':'direction: rtl; text-align: right;'} } ) }}</br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        {% if form_errors(form.email) %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form_errors(form.email, {'attr': {'class': 'alert alert-danger', 'role':'alert' } } ) }}</br>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-7">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'placeholder':'ايميل / Email',
+                            'style':'direction: rtl; text-align: right;'} } ) }}</br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        {% if form_errors(form.current_password) %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form_errors(form.current_password, {'attr': {'class': 'alert alert-danger', 'role':'alert' } } ) }}</br>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-7">
+                        {{ form_widget(form.current_password, {'attr': {'class': 'form-control input-lg', 'placeholder':'كلمة السر الحالية / Current Password',
+                            'style':'direction: rtl; text-align: right;'} } ) }}</br>
+                    </div>
+                </div>
+                {{ form_widget(form._token)}}
+                <div class="row">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-7">
+                        <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+
+    </div>
+{% endblock body %}

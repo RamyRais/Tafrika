@@ -1,0 +1,62 @@
+{% extends "::layout.html.twig" %}
+{% block title %} login {% endblock %}
+{% block body %}
+
+
+<div class="row">
+
+    <div class="col-md-9">
+        <form action="{{ path("fos_user_security_check") }}" method="POST"
+              class="form-horizontal">
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-7">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required"
+                            class="form-control input-lg" placeholder="المفرك  / username"
+                            style="direction: rtl; text-align: right;"/></br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-7">
+                    <input type="password" id="password" name="_password"  required="required"
+                           class="form-control input-lg" placeholder="كلمة السر / Password"
+                           style="direction: rtl; text-align: right;"/></br>
+                </div>
+            </div>
+            <!--
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <div class="col-sm-offset-7 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="remember_me" name="_remember_me"> Remember me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-7">
+                    <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" /></br>
+                </div>
+            </div>
+             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        </form>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
