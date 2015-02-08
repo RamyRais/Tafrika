@@ -45,6 +45,7 @@
             </div>
 
         </div>
+        <div id="comment_list">
         {% for comment in list %}
 
         <div class="well well-sm">
@@ -55,12 +56,14 @@
         </div>
 
         {% endfor %}
+        </div>
         {% if app.user %}
         <div class="row">
             <form id="comment_form" action="{{ path('status_show', {'status_id': status.id}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
-                <div class="col-lg-9">
+                <div id="jquery_div">
+                <div  class="col-lg-9">
 
-                    <div class="well well-sm">
+                    <div  class="well well-sm">
                         {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'content' }}) }}
                     </div>
                 </div>
@@ -71,10 +74,28 @@
                         <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
                     </div>
                 </div>
+                </div>
             </form>
         </div>
             {% endif %}
     </div>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $("#comment_form").submit(function() {
 
+            var url = "{{ path('status_show', {'status_id': status.id}) }}";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#comment_form").serialize(),
+                success: function(data) {
+                    $('#comment_list').load(document.URL +  ' #comment_list');
+                    $('#jquery_div').load(document.URL +  ' #jquery_div');
+                }
+            });
+
+            return false;
+        });
+    </script>
 {% endblock %}
