@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Tafrika\UserBundle\Entity\User;
 
 /**
  * Controller managing the user profile
@@ -99,4 +101,43 @@ class ProfileController extends Controller
             'form' => $form->createView()
         ));
     }
+
+    /**
+     * @ParamConverter("user", options={"mapping": {"user_id": "id"}})
+     */
+    public function showOtherUserProfileAction(User $user, $page){
+        $postPerPage = $this->container->getParameter('postPerPage');
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
+        $posts = $repository->findBy(array('user'=>$user->getId()),
+            array('createdAt'=>'desc'),
+            $postPerPage,
+            $page);
+        return $this->render('TafrikaUserBundle:Profile:showOtherUser.html.twig', array(
+            'user' => $user,
+            'posts' => $posts,
+            'page' => $page,
+            'pageNumber'=>ceil(count($posts)/$postPerPage)
+        ));
+    }
+
+    /**
+     * @param User $user
+     * @param User $followed
+     * @return RedirectResponse
+     * @ParamConverter("user", options={"mapping": {"user_id": "id"}})
+     * @ParamConverter("followed", options={"mapping": {"followed_id": "id"}})
+     */
+     public function addFollowedAction(User $user, User $followed){
+         if( !$user->getfollowed()->contains($followed) and $user != $followed) {
+             $user->addfollowed($followed);
+             $entityManager = $this->getDoctrine()->getManager();
+             $entityManager->persist($user);
+             $entityManager->persist($followed);
+             $entityManager->flush();
+         }
+         return $this->redirect($this->generateUrl('user_profile',array(
+             'user_id'=>$user->getId(),
+             'page'=>1)));
+     }
 }

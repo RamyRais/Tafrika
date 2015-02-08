@@ -3,12 +3,13 @@
 {% block body %}
     <div class="jumbotron">
         <div style="text-align: center">
-        <h4>{{ user.username }}</h4>
+            <h4>{{ user.username }}</h4>
             {% if app.user %}
-                {% if app.user.username == user.username %}
-                    <p><a class="btn btn-primary" href="{{ path('fos_user_profile_edit') }}"
-                          role="button">Edit profile</a></p>
-                {% endif %}
+            {% if not(app.user in user.followed) %}
+                <p><a class="btn btn-primary" href="{{ path('add_followed',{'user_id':app.user.id,
+                    'followed_id': user.id}) }}"
+                      role="button">زيدو لشلة</a></p>
+            {% endif %}
             {% endif %}
         </div>
     </div>
