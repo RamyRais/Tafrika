@@ -9,6 +9,8 @@
 namespace Tafrika\PostBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Tafrika\PostBundle\Entity\Comment;
+use Tafrika\PostBundle\Form\CommentType;
 use Tafrika\PostBundle\Entity\Video;
 use Tafrika\PostBundle\Form\VideoType;
 use Tafrika\PostBundle\Form\VideoEditType;
@@ -47,8 +49,28 @@ class VideoController extends  Controller{
      * @ParamConverter("video", options={"mapping": {"video_id": "id"}})
      */
     public function showVideoAction(Video $video){
+        $list=$this->getDoctrine()
+            ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $video));
+
+        $user = $this->get('security.context')->getToken()->getUser();
+        $comment = new Comment();
+        $comment->setUser($user);
+        $comment->setPost($video);
+        $form = $this->createForm(new CommentType, $comment);
+        $request = $this->get('request');
+        if( $request->getMethod() == 'POST'){
+            $form->bind($request);
+            if($form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($comment);
+                $em->flush();
+                return $this->redirect($this->generateUrl('video_show', array('video_id' => $video->getId())));
+
+            }
+        }
+
         return $this->render('TafrikaPostBundle:Video:show.html.twig',array(
-            'video'=>$video
+            'video'=>$video,'form'=>$form->createView(),'list'=>$list
         ));
     }
 

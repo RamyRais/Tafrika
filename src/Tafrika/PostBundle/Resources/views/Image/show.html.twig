@@ -17,7 +17,7 @@
                     {% if app.user %}
                         {% if app.user.id == image.user.id %}
                         <div class="col-md-2">
-                            <a class="btn btn-default" href="{{ path("image_edit",{ "status_id": status.id}) }}">Modifier</a>
+                            <a class="btn btn-default" href="{{ path("image_edit",{ "image_id": image.id}) }}">Modifier</a>
                         </div>
                         {% endif %}
                     {% endif %}
@@ -46,6 +46,35 @@
                 </div>
             </div>
         </div>
+        {% for comment in list %}
+
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-md-1"><p class="text-primary">{{ comment.user.username }}</p></div>
+                    <div class="col-lg-11">{{ comment.content }}</div>
+                </div>
+            </div>
+
+        {% endfor %}
+        {% if app.user %}
+            <div class="row">
+                <form id="comment_form" action="{{ path('image_show', {'image_id': image.id}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
+                    <div class="col-lg-9">
+
+                        <div class="well well-sm">
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'content' }}) }}
+                        </div>
+                    </div>
+
+                    {{ form_widget(form._token)}}
+                    <div class="form-group">
+                        <div class="col-lg-3">
+                            <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
     </div>
     </div>
 {% endblock %}

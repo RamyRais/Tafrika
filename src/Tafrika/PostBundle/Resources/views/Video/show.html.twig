@@ -15,7 +15,7 @@
                         {{ video.title }}
                     </div>
                     {% if app.user %}
-                        {% if app.user.id == status.user.id %}
+                        {% if app.user.id == video.user.id %}
                         <div class="col-md-2">
                             <a class="btn btn-default" href="{{ path("video_edit",{ "video_id": video.id}) }}">Modifier</a>
                         </div>
@@ -48,6 +48,35 @@
                 </div>
             </div>
         </div>
+        {% for comment in list %}
+
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-md-1"><p class="text-primary">{{ comment.user.username }}</p></div>
+                    <div class="col-lg-11">{{ comment.content }}</div>
+                </div>
+            </div>
+
+        {% endfor %}
+        {% if app.user %}
+            <div class="row">
+                <form id="comment_form" action="{{ path('video_show', {'video_id': video.id}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
+                    <div class="col-lg-9">
+
+                        <div class="well well-sm">
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'content' }}) }}
+                        </div>
+                    </div>
+
+                    {{ form_widget(form._token)}}
+                    <div class="form-group">
+                        <div class="col-lg-3">
+                            <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
     </div>
     </div>
 {% endblock %}

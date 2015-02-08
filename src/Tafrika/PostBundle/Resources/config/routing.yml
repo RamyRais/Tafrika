@@ -51,3 +51,9 @@ image_edit:
     defaults: { _controller: TafrikaPostBundle:Image:editImage }
     requirements:
         image_id: \d+
+
+comment_add:
+    path: /status/{status_id}
+    defaults: { _controller: TafrikaPostBundle:Comment:addComment }
+    requirements:
+            status_id: \d+

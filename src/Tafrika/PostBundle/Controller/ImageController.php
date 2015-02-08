@@ -9,6 +9,8 @@
 namespace Tafrika\PostBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Tafrika\PostBundle\Entity\Comment;
+use Tafrika\PostBundle\Form\CommentType;
 use Tafrika\PostBundle\Entity\Image;
 use Tafrika\PostBundle\Form\ImageType;
 use Tafrika\PostBundle\Form\ImageEditType;
@@ -46,8 +48,30 @@ class ImageController extends Controller{
      * @ParamConverter("image", options={"mapping": {"image_id": "id"}})
      */
     public function showImageAction(Image $image){
+        $list=$this->getDoctrine()
+            ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $image));
+
+        $user = $this->get('security.context')->getToken()->getUser();
+        $comment = new Comment();
+        $comment->setUser($user);
+        $comment->setPost($image);
+        $form = $this->createForm(new CommentType, $comment);
+        $request = $this->get('request');
+        if( $request->getMethod() == 'POST'){
+            $form->bind($request);
+            if($form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($comment);
+                $em->flush();
+                return $this->redirect($this->generateUrl('image_show', array('image_id' => $image->getId())));
+
+            }
+        }
+
+
+
         return $this->render('TafrikaPostBundle:Image:show.html.twig',array(
-            'image'=>$image
+            'image'=>$image,'form'=>$form->createView(),'list'=>$list
         ));
     }
 
