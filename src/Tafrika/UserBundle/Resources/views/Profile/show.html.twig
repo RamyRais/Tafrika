@@ -26,14 +26,14 @@
                         </div>
                         <div class="panel-footer">
                             <div class="row">
-                                <div class="col-md-2">{{ post.likes }} likes</div>
+                                <div class="col-md-2"><div id="{{ 'count' ~ post.id }}">{{ post.likes }} likes</div></div>
                                 <div class="col-md-1">
-                                    <button type="button" class="btn btn-default">
+                                    <button type="button" id="{{ 'up_button' ~ post.id }}" class="btn btn-default  increment up status">
                                         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" id="like"></span>
                                     </button>
                                 </div>
                                 <div class="col-md-1">
-                                    <button type="button" class="btn btn-default">
+                                    <button type="button" id="{{ 'down_button' ~ post.id }}" class="btn btn-default  increment down status">
                                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                                     </button>
                                 </div>
@@ -56,14 +56,14 @@
                         </div>
                         <div class="panel-footer">
                             <div class="row">
-                                <div class="col-md-2">{{ post.likes }} likes</div>
+                                <div class="col-md-2"><div id="{{ 'count' ~ post.id }}">{{ post.likes }} likes</div></div>
                                 <div class="col-md-1">
-                                    <button type="button" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                    <button type="button" id="{{ 'up_button' ~ post.id }}" class="btn btn-default  increment up video">
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" id="like"></span>
                                     </button>
                                 </div>
                                 <div class="col-md-1">
-                                    <button type="button" class="btn btn-default">
+                                    <button type="button" id="{{ 'down_button' ~ post.id }}" class="btn btn-default  increment down video">
                                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                                     </button>
                                 </div>
@@ -81,6 +81,24 @@
                         </div>
                         <div class="panel-body">
                             <img src="{{ asset(post.getWebPath) }}" alt="{{ post.title }}" height="500" width="454">
+                        </div><div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-2"><div id="{{ 'count' ~ post.id }}">{{ post.likes }} likes</div></div>
+                                <div class="col-md-1">
+                                    <button type="button" id="{{ 'up_button' ~ post.id }}" class="btn btn-default  increment up image">
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" id="like"></span>
+                                    </button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" id="{{ 'down_button' ~ post.id }}" class="btn btn-default  increment down image">
+                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-2">
+                                    <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
@@ -118,4 +136,98 @@
             </nav>
         </div>
     </div>
+    <script>
+
+        $(function(){
+
+            $(".increment").click(function(){
+
+
+                if($(this).hasClass("up")) {
+                    if ($(this).hasClass("video")) {
+                        var id = $.parseJSON($(this).attr('id').substr(9));
+                        var url = Routing.generate('vote_up_video', {'video_id': id});
+                    }else if ($(this).hasClass("image")) {
+                        var id = $.parseJSON($(this).attr('id').substr(9));
+                        var url = Routing.generate('vote_up_image', {'image_id': id});
+                    }else if ($(this).hasClass("status")) {
+                        var id = $.parseJSON($(this).attr('id').substr(9));
+                        var url = Routing.generate('vote_up_status', {'status_id': id});
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#thumbs_up").serialize(),
+                        success: function (data) {
+                            up="up_button";
+                            down="down_button";
+                            count=" #count";
+                            if (data.button == "up_button") {
+                                document.getElementById(up.concat(id)).style.background = '#337ab7';
+                                document.getElementById(down.concat(id)).style.background = '#ffffff';
+                            } else {
+                                document.getElementById(up.concat(id)).style.background = '#ffffff';
+                                document.getElementById(down.concat(id)).style.background = '#ffffff';
+                            }
+                            $(count.concat(id)).load(document.URL + count.concat(id));
+
+                        }
+                    });
+
+
+                } else {
+                    if ($(this).hasClass("video")) {
+                        var id = $.parseJSON($(this).attr('id').substr(11));
+                        var url = Routing.generate('vote_down_video', {'video_id': id});
+                    }else if ($(this).hasClass("image")) {
+                        var id = $.parseJSON($(this).attr('id').substr(11));
+                        var url = Routing.generate('vote_down_image', {'image_id': id});
+                    }else if ($(this).hasClass("status")) {
+                        var id = $.parseJSON($(this).attr('id').substr(11));
+                        var url = Routing.generate('vote_down_status', {'status_id': id});
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#thumbs_up").serialize(),
+                        success: function (data) {
+                            up = "up_button";
+                            down = "down_button";
+                            count=" #count";
+                            if (data.button == "down_button") {
+                                document.getElementById(down.concat(id)).style.background = '#337ab7';
+                                document.getElementById(up.concat(id)).style.background = '#ffffff';
+                            } else {
+                                document.getElementById(up.concat(id)).style.background = '#ffffff';
+                                document.getElementById(down.concat(id)).style.background = '#ffffff';
+                            }
+                            $(count.concat(id)).load(document.URL + count.concat(id));
+
+                        }
+                    });
+
+
+                }
+
+                $(this).parent().addClass("bump");
+
+                setTimeout(function(){
+                    $(this).parent().removeClass("bump");
+                }, 400);
+            });
+        });
+
+
+        window.onload = function() {
+            {% for vote in votes %}
+            if(({{ vote.vote }})==1) {
+                document.getElementById("{{ 'up_button' ~ vote.post.id }}").style.background = '#337ab7';
+            }
+            else {
+                document.getElementById("{{ 'down_button' ~ vote.post.id }}").style.background = '#337ab7';
+            }
+            {% endfor %}
+
+        }
+    </script>
 {% endblock body %}

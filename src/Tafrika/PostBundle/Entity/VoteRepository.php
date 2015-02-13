@@ -3,6 +3,7 @@
 namespace Tafrika\PostBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * VoteRepository
@@ -12,4 +13,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class VoteRepository extends EntityRepository
 {
+    public function findFresh($postPerPage, $page,$user,$posts){
+        if($page<1){
+            throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
+        }
+
+        $query = $this->createQueryBuilder('v');
+        $query->join('v.user','user');
+        $query->join('v.post','post');
+        $query->where('v.user = :us')
+            ->setParameter('us', $user);
+        $query->andWhere('v.post IN (:ps)')
+            ->setParameter('ps', $posts);
+        //$query->where('v.user'.$user->getId());
+        $query->orderBy('post.createdAt','DESC');
+        $query->getQuery();
+        //$query->setFirstResult( ($page - 1)* $postPerPage);
+        //$query->setMaxResults($postPerPage);
+        return new Paginator($query);
+    }
 }
