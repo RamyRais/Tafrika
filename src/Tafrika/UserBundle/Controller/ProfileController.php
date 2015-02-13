@@ -14,6 +14,7 @@ use FOS\UserBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Tafrika\UserBundle\Entity\User;
@@ -122,22 +123,50 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param User $user
-     * @param User $followed
-     * @return RedirectResponse
-     * @ParamConverter("user", options={"mapping": {"user_id": "id"}})
-     * @ParamConverter("followed", options={"mapping": {"followed_id": "id"}})
+     * @return Response
      */
-     public function addFollowedAction(User $user, User $followed){
-         if( !$user->getfollowed()->contains($followed) and $user != $followed) {
-             $user->addfollowed($followed);
-             $entityManager = $this->getDoctrine()->getManager();
-             $entityManager->persist($user);
-             $entityManager->persist($followed);
-             $entityManager->flush();
+     public function addFollowedAction(){
+         $request = $this->get('request');
+         if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+             $request->getSession()->set('_security.main.target_path', $request->getUri());
+             return $this->redirect($this->generateUrl('fos_user_security_login'));
          }
-         return $this->redirect($this->generateUrl('user_profile',array(
-             'user_id'=>$user->getId(),
-             'page'=>1)));
+         if($request->isXmlHttpRequest()){
+             $followed_id = $request->request->get('followed_id');
+             $user = $this->get('security.context')->getToken()->getUser();
+             $entityManager = $this->getDoctrine()->getManager();
+             $repository = $entityManager->getRepository('TafrikaUserBundle:User');
+             $followed = $repository->find($followed_id);
+             if ($user->addfollowed($followed)){
+                 $entityManager->persist($user);
+                 $entityManager->persist($followed);
+                 $entityManager->flush();
+             }
+         }
+         return new Response("great");
      }
+
+    /**
+     * @return Response
+     */
+    public function deleteFollowedAction(){
+        $request = $this->get('request');
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            $request->getSession()->set('_security.main.target_path', $request->getUri());
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        if($request->isXmlHttpRequest()){
+            $followed_id = $request->request->get('followed_id');
+            $user = $this->get('security.context')->getToken()->getUser();
+            $entityManager = $this->getDoctrine()->getManager();
+            $repository = $entityManager->getRepository('TafrikaUserBundle:User');
+            $followed = $repository->find($followed_id);
+            if ($user->removefollowed($followed)){
+                $entityManager->persist($user);
+                $entityManager->persist($followed);
+                $entityManager->flush();
+            }
+        }
+        return new Response("great");
+    }
 }
