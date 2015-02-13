@@ -40,10 +40,24 @@ class ProfileController extends Controller
                                     array('createdAt'=>'desc'),
                                     $postPerPage,
                                     $page);
+        $array=array();
+        $i=0;
+
+        foreach($posts as $x){
+            $array[$i]=$x;
+            $i++;
+
+        }
+
+        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
+        $votes=$vote->findFresh($postPerPage,$page,$user,$array);
+
+
         return $this->render('FOSUserBundle:Profile:show.html.twig', array(
             'user' => $user,
             'posts' => $posts,
             'page' => $page,
+            'votes' => $votes,
             'pageNumber'=>ceil(count($posts)/$postPerPage)
         ));
     }

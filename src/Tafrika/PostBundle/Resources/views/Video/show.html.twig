@@ -30,14 +30,14 @@
             </div>
             <div class="panel-footer">
                 <div class="row">
-                    <div class="col-md-2">{{ video.likes }} likes</div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-default">
+                    <div class="col-md-2"> <div id="count">{{ video.likes }} likes</div></div>
+                    <div id="thumbs_up" class="col-md-1">
+                        <button  type="button" id="up_button" class="btn btn-default increment up">
                             <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                         </button>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn btn-default">
+                        <button type="button" id="down_button" class="btn btn-default increment down">
                             <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -48,6 +48,30 @@
                 </div>
             </div>
         </div>
+
+        {% if app.user %}
+            <div class="row">
+                <form id="comment_form" action="{{ path('video_show', {'video_id': video.id}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
+                    <div id="jquery_div">
+                        <div class="col-lg-9">
+
+                            <div class="well well-sm">
+                                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'content' }}) }}
+                            </div>
+                        </div>
+
+                        {{ form_widget(form._token)}}
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+
+
         <div id="comment_list">
         {% for comment in list %}
 
@@ -60,27 +84,6 @@
 
         {% endfor %}
         </div>
-        {% if app.user %}
-            <div class="row">
-                <form id="comment_form" action="{{ path('video_show', {'video_id': video.id}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
-                    <div id="jquery_div">
-                    <div class="col-lg-9">
-
-                        <div class="well well-sm">
-                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'content' }}) }}
-                        </div>
-                    </div>
-
-                    {{ form_widget(form._token)}}
-                    <div class="form-group">
-                        <div class="col-lg-3">
-                            <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
-                        </div>
-                    </div>
-                    </div>
-                </form>
-            </div>
-        {% endif %}
     </div>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -100,5 +103,82 @@
 
             return false;
         });
+
+        $(function(){
+
+            $(".increment").click(function(){
+
+
+                if($(this).hasClass("up")) {
+
+                    var url = "{{ path('vote_up_video', {'video_id': video.id}) }}";
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#thumbs_up").serialize(),
+                        success: function(data){
+                            if(data.button=="up_button") {
+                                document.getElementById("up_button").style.background = '#337ab7';
+                                document.getElementById("down_button").style.background = '#ffffff';
+                            }else
+                            {
+                                document.getElementById("up_button").style.background = '#ffffff';
+                                document.getElementById("down_button").style.background = '#ffffff';
+                            }
+                            $('#count').load(document.URL +  ' #count');
+
+                        }
+                    });
+
+                } else {
+
+
+                    var url = "{{ path('vote_down_video', {'video_id': video.id}) }}";
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#thumbs_up").serialize(),
+                        success: function(data){
+
+                            if(data.button=="down_button") {
+                                document.getElementById("down_button").style.background = '#337ab7';
+                                document.getElementById("up_button").style.background = '#ffffff';
+                            }else
+                            {
+                                document.getElementById("up_button").style.background = '#ffffff';
+                                document.getElementById("down_button").style.background = '#ffffff';
+                            }
+                            $('#count').load(document.URL +  ' #count');
+
+                        }
+                    });
+
+                }
+
+                $(this).parent().addClass("bump");
+
+                setTimeout(function(){
+                    $(this).parent().removeClass("bump");
+                }, 400);
+            });
+        });
+
+        window.onload = function() {
+
+            if("{{ user_vote }}"=="vote_up") {
+                document.getElementById("up_button").style.background = '#337ab7';
+                document.getElementById("down_button").style.background = '#ffffff';
+            }else if("{{ user_vote }}"=="no_vote")
+            {
+                document.getElementById("up_button").style.background = '#ffffff';
+                document.getElementById("down_button").style.background = '#ffffff';
+            }
+            else if("{{ user_vote }}"=="vote_down")
+            {
+                document.getElementById("up_button").style.background = '#ffffff';
+                document.getElementById("down_button").style.background = '#337ab7';
+            }
+
+        }
     </script>
 {% endblock %}

@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Tafrika\UserBundle\TafrikaUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Tafrika\PostBundle\TafrikaPostBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
