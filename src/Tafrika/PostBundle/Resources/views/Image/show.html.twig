@@ -74,7 +74,13 @@
 
             <div class="well well-sm">
                 <div class="row">
-                    <div class="col-md-1"><p class="text-primary">{{ comment.user.username }}</p></div>
+                    <div class="col-md-1">
+                        {% if app.user == comment.user%}
+                            <a href="{{ path('fos_user_profile_show') }}"> {{ comment.user.username }}</a>
+                        {% else %}
+                            <a href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"> {{ comment.user.username }}</a>
+                        {% endif %}
+                    </div>
                     <div class="col-lg-11">{{ comment.content }}</div>
                 </div>
             </div>

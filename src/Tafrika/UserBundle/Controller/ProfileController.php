@@ -128,10 +128,26 @@ class ProfileController extends Controller
             array('createdAt'=>'desc'),
             $postPerPage,
             $page);
+
+        $array=array();
+        $i=0;
+
+        foreach($posts as $x){
+            $array[$i]=$x;
+            $i++;
+
+        }
+
+        $current_user = $this->get('security.context')->getToken()->getUser();
+
+        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
+        $votes=$vote->findFresh($postPerPage,$page,$current_user,$array);
+
         return $this->render('TafrikaUserBundle:Profile:showOtherUser.html.twig', array(
             'user' => $user,
             'posts' => $posts,
             'page' => $page,
+            'votes' =>$votes,
             'pageNumber'=>ceil(count($posts)/$postPerPage)
         ));
     }
