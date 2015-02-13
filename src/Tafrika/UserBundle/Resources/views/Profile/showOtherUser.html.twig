@@ -3,12 +3,16 @@
 {% block body %}
     <div class="jumbotron">
         <div style="text-align: center">
-        <h4>{{ user.username }}</h4>
+            <h4>{{ user.username }}</h4>
             {% if app.user %}
-                {% if app.user.username == user.username %}
-                    <p><a class="btn btn-primary" href="{{ path('fos_user_profile_edit') }}"
-                          role="button">Edit profile</a></p>
-                {% endif %}
+                <p><a href="#"
+                      role="button" id="friendButton"
+            {% if not(app.user.isFollowed(user)) %}
+                 class="btn btn-primary" >زيدو لشلة
+            {% else %}
+                class="btn btn-success" >سي ديجا في شلة
+            {% endif %}
+                    </a></p>
             {% endif %}
         </div>
     </div>
@@ -119,3 +123,48 @@
         </div>
     </div>
 {% endblock body %}
+{% block foot_javascripts %}
+    <script>
+        var currentUserId = {{ app.user.id|json_encode() }};
+        var userId = {{ user.id|json_encode() }};
+        var userFollowed = {{ user.followed|json_encode() }};
+        var isFollowed = $.inArray(currentUserId,userFollowed)!= -1 ? true : false ;
+        $("#friendButton").click(function(){
+           if(isFollowed){ // user are not friend
+               $.ajax({
+                   cache: false,
+                   type: "POST",
+                   url: "{{ path('add_followed') }}",
+                   data: { 'followed_id': userId }
+               }).done(function(msg){
+                   isFollowed = !isFollowed ;
+                   $("#friendButton").removeClass('btn-primary').addClass('btn-success');
+                   $("#friendButton").text("سي ديجا في شلة");
+               })
+           }else{
+               $.ajax({
+                   cache: false,
+                   type: "POST",
+                   url: "{{ path('delete_followed') }}",
+                   data: { 'followed_id': userId }
+               }).done(function(msg) {
+                   isFollowed = !isFollowed;
+                   $("#friendButton").removeClass('btn-success').addClass('btn-primary');
+                   $("#friendButton").text("زيدو لشلة");
+               })
+           }
+        });
+        $("#friendButton").mouseover(function(){
+            if(!isFollowed){
+                $("#friendButton").removeClass('btn-success').addClass('btn-danger');
+                $("#friendButton").text('فسخ الكازي');
+            }
+        });
+        $("#friendButton").mouseout(function(){
+            if(!isFollowed){
+                $("#friendButton").removeClass('btn-danger').addClass('btn-success');
+                $("#friendButton").text('سي ديجا في شلة');
+            }
+        })
+    </script>
+{% endblock %}

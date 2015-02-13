@@ -1,0 +1,16 @@
+user_profile:
+    path: /user/{user_id}/profile/{page}
+    defaults: { _controller: TafrikaUserBundle:Profile:showOtherUserProfile, page: 1 }
+    requirements:
+        user_id: \d+
+        page: \d+
+
+add_followed:
+    path: /add_followed
+    defaults: { _controller: TafrikaUserBundle:Profile:addFollowed }
+    methods:  [POST]
+
+delete_followed:
+    path: /delete_followed
+    defaults: { _controller: TafrikaUserBundle:Profile:deleteFollowed }
+    methods: [POST]

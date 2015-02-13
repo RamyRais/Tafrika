@@ -96,11 +96,12 @@ class User extends BaseUser
      */
     public function addfollowed($followed)
     {
-        if( !$this->isFollowed($followed)) {
+        if( !$this->isFollowed($followed) && $followed instanceof User) {
             $this->followed->add($followed);
             $followed->addfollowers($this);
+            return $this;
         }
-        return $this;
+
     }
 
     /**
@@ -110,8 +111,10 @@ class User extends BaseUser
      */
     public function removefollowed($followed)
     {
-        $this->followed->removeElement($followed);
-        $followed->removefollowers($this);
+        if( !$this->isFollowed($followed) && $followed instanceof User) {
+            $this->followed->removeElement($followed);
+            $followed->removefollowers($this);
+        }
     }
 
     /**
