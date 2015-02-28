@@ -53,10 +53,9 @@ image_edit:
         image_id: \d+
 
 comment_add:
-    path: /status/{status_id}
+    path: /add_comment
     defaults: { _controller: TafrikaPostBundle:Comment:addComment }
-    requirements:
-            status_id: \d+
+    methods: [POST]
 
 vote_up_status:
     path: /status/{status_id}/voteUp

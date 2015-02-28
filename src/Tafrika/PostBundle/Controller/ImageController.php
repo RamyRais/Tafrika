@@ -72,29 +72,10 @@ class ImageController extends Controller{
             $user_vote="vote_down";
 
         }
-
         $list=$this->getDoctrine()
             ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $image));
-
-        $comment = new Comment();
-        $comment->setUser($user);
-        $comment->setPost($image);
-        $form = $this->createForm(new CommentType, $comment);
-        $request = $this->get('request');
-        if( $request->getMethod() == 'POST'){
-            $form->bind($request);
-            if($form->isValid()){
-                $em->persist($comment);
-                $em->flush();
-                return $this->redirect($this->generateUrl('image_show', array('image_id' => $image->getId())));
-
-            }
-        }
-
-
-
         return $this->render('TafrikaPostBundle:Image:show.html.twig',array(
-            'image'=>$image,'form'=>$form->createView(),'list'=>$list,'user_vote'=>$user_vote
+            'image'=>$image,'list'=>$list,'user_vote'=>$user_vote
         ));
     }
 

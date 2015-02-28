@@ -1,13 +1,54 @@
 {% extends "::layout.html.twig" %}
 
+{#}% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/test.css') }}" type="text/css" />
+{% endblock %#}
 {% block body_javascripts %}
     <div id="fb-root"></div>
     <script src="{{ asset('js/FB_patage.js') }}"></script>
 {% endblock %}
 {% block body %}
+
+
     <div onload="get_vote();" class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
+
+        {#        <div class="panel panel-default">
+            <div class="panel-heading">
+                {% if app.user %}
+                    {% if app.user.id == status.user.id %}
+                        <a href="{{ path("status_edit",{ "status_id": status.id}) }}" class="btn btn-default pull-right">Modifier</a>
+                    {% endif %}
+                {% endif %}
+                <h4>{{ status.title }}</h4>
+            </div>
+            <div class="panel-body">
+
+                <div class="clearfix"></div>
+                {{ status.content }}<hr>
+
+                <div class="row">
+                    <div class="col-md-2"> <div id="count">{{ status.likes }} likes</div></div>
+                    <div id="thumbs_up" class="col-md-1">
+                        <button  type="button" id="up_button" class="btn btn-default increment up">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" id="down_button" class="btn btn-default increment down">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2">
+                        <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>#}
+
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
@@ -47,25 +88,7 @@
         </div>
 
         {% if app.user %}
-            <div class="row">
-                <form id="comment_form" action="{{ path('status_show', {'status_id': status.id}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
-                    <div id="jquery_div">
-                        <div  class="col-lg-9">
-
-                            <div  class="well well-sm">
-                                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'content' }}) }}
-                            </div>
-                        </div>
-
-                        {{ form_widget(form._token)}}
-                        <div class="form-group">
-                            <div class="col-lg-3">
-                                <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            {{ render(controller('TafrikaPostBundle:Comment:renderComment', {'post_id': status.id } )) }}
         {% endif %}
 
         <div id="comment_list">
@@ -91,21 +114,7 @@
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script>
-        $("#comment_form").submit(function() {
 
-            var url;//= "{{ path('status_show', {'status_id': status.id}) }}";
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: $("#comment_form").serialize(),
-                success: function(data) {
-                    $('#comment_list').load(document.URL +  ' #comment_list');
-                    $('#jquery_div').load(document.URL +  ' #jquery_div');
-                }
-            });
-
-            return false;
-        });
 
         $(function(){
 

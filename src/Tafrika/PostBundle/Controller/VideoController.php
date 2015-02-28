@@ -75,24 +75,8 @@ class VideoController extends  Controller{
         }
         $list=$this->getDoctrine()
             ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $video));
-
-        $comment = new Comment();
-        $comment->setUser($user);
-        $comment->setPost($video);
-        $form = $this->createForm(new CommentType, $comment);
-        $request = $this->get('request');
-        if( $request->getMethod() == 'POST'){
-            $form->bind($request);
-            if($form->isValid()){
-                $em->persist($comment);
-                $em->flush();
-                return $this->redirect($this->generateUrl('video_show', array('video_id' => $video->getId())));
-
-            }
-        }
-
         return $this->render('TafrikaPostBundle:Video:show.html.twig',array(
-            'video'=>$video,'form'=>$form->createView(),'list'=>$list,'user_vote'=>$user_vote
+            'video'=>$video,'list'=>$list,'user_vote'=>$user_vote
         ));
     }
 

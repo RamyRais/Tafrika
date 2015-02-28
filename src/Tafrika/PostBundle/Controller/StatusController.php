@@ -74,31 +74,10 @@ class StatusController extends Controller{
             $user_vote="vote_down";
 
         }
-
-
         $list=$this->getDoctrine()
             ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $status));
-
-
-        $comment = new Comment();
-        $comment->setUser($user);
-        $comment->setPost($status);
-        $form = $this->createForm(new CommentType, $comment);
-        $request = $this->get('request');
-        if( $request->getMethod() == 'POST'){
-            $form->bind($request);
-            if($form->isValid()){
-                $em->persist($comment);
-                $em->flush();
-                return $this->redirect($this->generateUrl('status_show', array('status_id' => $status->getId())));
-
-            }
-        }
-
-
-
         return $this->render('TafrikaPostBundle:Status:show.html.twig',array(
-            'status'=>$status,'form'=>$form->createView(),'list'=>$list,'user_vote'=>$user_vote
+            'status'=>$status,'list'=>$list,'user_vote'=>$user_vote
         ));
     }
 
