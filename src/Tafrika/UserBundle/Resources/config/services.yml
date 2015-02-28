@@ -6,3 +6,8 @@ services:
         class: Tafrika\UserBundle\Form\Type\RegistrationFormType
         tags:
             - { name: form.type, alias: tafrika_user_registration }
+
+    Gravatar.twig.extension:
+        class: Tafrika\UserBundle\Twig\GravatarExtension
+        tags:
+            -  { name: twig.extension }
