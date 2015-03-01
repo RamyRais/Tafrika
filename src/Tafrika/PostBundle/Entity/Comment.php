@@ -3,6 +3,7 @@
 namespace Tafrika\PostBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comment
@@ -20,6 +21,14 @@ class Comment
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime")
+     * @Assert\DateTime()
+     */
+    private $date;
 
     /**
      * @var string
@@ -43,6 +52,10 @@ class Comment
      * @ORM\JoinColumn(name="user_id",referencedColumnName="id")
      */
     private $user;
+
+    public function __construct() {
+        $this->date = new \DateTime('now',new \DateTimeZone("UTC"));
+    }
 
     /**
      * Get id
@@ -121,5 +134,28 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Comment
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
