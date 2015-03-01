@@ -8,23 +8,19 @@
     <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
+
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-10">
-                        {{ image.title }}
-                    </div>
-                    {% if app.user %}
-                        {% if app.user.id == image.user.id %}
-                        <div class="col-md-2">
-                            <a class="btn btn-default" href="{{ path("image_edit",{ "image_id": image.id}) }}">Modifier</a>
-                        </div>
-                        {% endif %}
+                {% if app.user %}
+                    {% if app.user.id == image.user.id %}
+                        <a href="{{ path("image_edit",{ "image_id": image.id}) }}" class="btn btn-default pull-right">Modifier</a>
                     {% endif %}
-                </div>
+                {% endif %}
+                <h4>{{ image.title }}</h4>
             </div>
             <div class="panel-body">
-                <img src="{{ asset(image.getWebPath) }}" alt="{{ image.title }}" height="500" width="454">
+                <div class="clearfix"></div>
+                <img src="{{ asset(image.getWebPath) }}" alt="{{ image.title }}" class="img-responsive">
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -47,32 +43,38 @@
             </div>
         </div>
 
+
         {% if app.user %}
             {{ render(controller('TafrikaPostBundle:Comment:renderComment', {'post_id': image.id } )) }}
         {% endif %}
 
         <div id="comment_list">
-        {% for comment in list %}
+            <ul class="list-group">
+                {% for comment in list %}
+                    <li class="list-group-item">
+                        <div class="media">
+                            <div class="media-left media-middle">
+                                {% if app.user == comment.user%}
+                                <a href="{{ path('fos_user_profile_show') }}">
+                                    {% else %}
+                                    <a href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}">
+                                        {% endif %}
+                                        <img class="media-object" src="{{ comment.user.email|getGravatarImage(40)}}" >
+                                    </a>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading comment_date">{{ comment.date|date }}</h6>
+                                {{ comment.content }}
 
-            <div class="well well-sm">
-                <div class="row">
-                    <div class="col-md-1">
-                        {% if app.user == comment.user%}
-                            <a href="{{ path('fos_user_profile_show') }}"> {{ comment.user.username }}</a>
-                        {% else %}
-                            <a href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"> {{ comment.user.username }}</a>
-                        {% endif %}
-                    </div>
-                    <div class="col-lg-11">{{ comment.content }}</div>
-                </div>
-            </div>
-
-        {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
 
     </div>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script>
 
         $(function(){

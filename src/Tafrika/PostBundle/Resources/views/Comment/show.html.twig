@@ -1,3 +1,18 @@
+<div class="well">
+    <h4>Leave a Comment:</h4>
+    <form role="form" id="comment_form" method="POST" class="form-horizontal">
+        <div id="jquery_div">
+            <div class="form-group">
+                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'_content', 'row':'3' }}) }}
+                {{ form_widget(form._token)}}
+            </div>
+            <button id="submit_comment_form" type="submit" value="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+{#
 <div class="row">
     <form id="comment_form" method="POST" class="form-horizontal">
         <div id="jquery_div">
@@ -16,7 +31,7 @@
             </div>
         </div>
     </form>
-</div>
+</div>#}
 
 <script>
     $(document).ready(function(){

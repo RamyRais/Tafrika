@@ -1,20 +1,18 @@
 {% extends "::layout.html.twig" %}
 
-{#}% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/test.css') }}" type="text/css" />
-{% endblock %#}
+
 {% block body_javascripts %}
     <div id="fb-root"></div>
     <script src="{{ asset('js/FB_patage.js') }}"></script>
 {% endblock %}
 {% block body %}
 
-
+    </br>
     <div onload="get_vote();" class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
 
-        {#        <div class="panel panel-default">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 {% if app.user %}
                     {% if app.user.id == status.user.id %}
@@ -26,45 +24,8 @@
             <div class="panel-body">
 
                 <div class="clearfix"></div>
-                {{ status.content }}<hr>
-
-                <div class="row">
-                    <div class="col-md-2"> <div id="count">{{ status.likes }} likes</div></div>
-                    <div id="thumbs_up" class="col-md-1">
-                        <button  type="button" id="up_button" class="btn btn-default increment up">
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" id="down_button" class="btn btn-default increment down">
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2">
-                        <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
-                    </div>
-                </div>
+                    {{ status.content }}
             </div>
-        </div>#}
-
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-10">
-                        {{ status.title }}
-                    </div>
-                    {% if app.user %}
-                        {% if app.user.id == status.user.id %}
-                        <div class="col-md-2">
-                            <a class="btn btn-default" href="{{ path("status_edit",{ "status_id": status.id}) }}">Modifier</a>
-                        </div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-            <div class="panel-body">{{ status.content }}</div>
             <div class="panel-footer">
                 <div class="row">
                     <div class="col-md-2"> <div id="count">{{ status.likes }} likes</div></div>
@@ -84,7 +45,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         {% if app.user %}
@@ -92,27 +52,32 @@
         {% endif %}
 
         <div id="comment_list">
-        {% for comment in list %}
+        <ul class="list-group">
+            {% for comment in list %}
+                <li class="list-group-item">
+                    <div class="media">
+                        <div class="media-left media-middle">
+                        {% if app.user == comment.user%}
+                            <a href="{{ path('fos_user_profile_show') }}">
+                        {% else %}
+                            <a href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}">
+                        {% endif %}
+                            <img class="media-object" src="{{ comment.user.email|getGravatarImage(40)}}" >
+                            </a>
+                        </div>
+                        <div class="media-body">
+                                <h6 class="media-heading comment_date">{{ comment.date|date }}</h6>
+                                {{ comment.content }}
 
-        <div class="well well-sm">
-            <div class="row">
-                <div class="col-md-1">
-                    {% if app.user == comment.user%}
-                    <a href="{{ path('fos_user_profile_show') }}"> {{ comment.user.username }}</a>
-                    {% else %}
-                    <a href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"> {{ comment.user.username }}</a>
-                    {% endif %}
-                </div>
-                <div class="col-lg-11">{{ comment.content }}</div>
-            </div>
-        </div>
-
-        {% endfor %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
         </div>
 
     </div>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script>
 
 

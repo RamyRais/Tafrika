@@ -12,7 +12,7 @@
                 {% if post._type == "STATUS" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{{ path('status_show', {'status_id': post.id}) }}"> {{ post.title }}</a>
+                            <a href="{{ path('status_show', {'status_id': post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel-body">
                             {{ post.content }}
@@ -40,12 +40,14 @@
                 {% elseif post._type == "VIDEO" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{{ path('video_show', {'video_id':post.id}) }}">{{ post.title }}</a>
+                            <a href="{{ path('video_show', {'video_id':post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel panel-body">
-                            <iframe width="550" height="454"
+                            <div class="embed-responsive embed-responsive-4by3">
+                                <iframe class="embed-responsive-item"
                                     src="{{ post.url }}">
-                            </iframe>
+                                </iframe>
+                            </div>
                         </div>
                         <div class="panel-footer">
                             <div class="row">
@@ -70,10 +72,10 @@
                 {% elseif post._type == "IMAGE" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{{ path('image_show', {'image_id':post.id}) }}">{{ post.title }}</a>
+                            <a href="{{ path('image_show', {'image_id':post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel-body">
-                            <img src="{{ asset(post.getWebPath) }}" alt="{{ post.title }}" height="500" width="454">
+                            <img src="{{ asset(post.getWebPath) }}" alt="{{ post.title }}" class="img-responsive">
                         </div>
                         <div class="panel-footer">
                             <div class="row">
