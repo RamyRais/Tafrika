@@ -69,5 +69,22 @@ fos_user:
     firewall_name: main
     user_class: Tafrika\UserBundle\Entity\User
     registration:
-            form:
-                type: tafrika_user_registration
+        form:
+            type: tafrika_user_registration
+
+hwi_oauth:
+  firewall_name: main
+  resource_owners:
+      facebook:
+          type: facebook
+          client_id: %oauth.facebook.id%
+          client_secret: %oauth.facebook.secret%
+          options:
+              display: popup
+      google:
+          type:                google
+          client_id:           %oauth.google.id%
+          client_secret:       %oauth.google.secret%
+          scope:               "email profile"
+  http_client:
+      timeout: 10000

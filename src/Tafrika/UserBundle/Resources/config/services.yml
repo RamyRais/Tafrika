@@ -11,3 +11,7 @@ services:
         class: Tafrika\UserBundle\Twig\GravatarExtension
         tags:
             -  { name: twig.extension }
+
+    tafrika.oauth.user_provider:
+        class: Tafrika\UserBundle\OAuth\UserProvider
+        arguments: [@fos_user.user_manager, {facebook: facebook_id, google: google_id}]
