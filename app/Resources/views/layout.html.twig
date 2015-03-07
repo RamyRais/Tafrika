@@ -5,11 +5,11 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('css/main_style.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-social.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" type="text/css" />
     {% block stylesheets %}{% endblock %}
     <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {% block head_javascripts %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 </head>
@@ -30,16 +30,20 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        {#<a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> User</a>
+                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="fa fa-caret-down"></span></a>
+                        #}<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="fa fa-caret-down"></span> مفرك <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         </a>
+
                         <ul class="dropdown-menu" role="menu">
                             {% if app.user %}
-                            <li><a href="{{ path('fos_user_profile_show') }}">بروفيلي</a></li>
-                            <li><a href="{{ path('fos_user_security_logout') }}">انستو</a></li>
+                            <li><a href="{{ path('fos_user_profile_show') }}">بروفيلي <i class="fa fa-home"></i></a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}">انستو  <i class="fa fa-sign-out"></i></a></li>
                             {% else %}
-                            <li><a href="{{ path('fos_user_security_login') }}">تفضل بحذانا</a></li>
-                            <li><a href="{{ path('fos_user_registration_register') }}">أعمل بروفيل</a></li>
+                            <li><a href="{{ path('fos_user_security_login') }}">تفضل بحذانا <i class="fa fa-sign-in"></i></a></li>
+                            <li><a href="{{ path('fos_user_registration_register') }}">أعمل بروفيل <i class="fa fa-user-plus"></i></a></li>
                             {% endif %}
                         </ul>
                     </li>
@@ -70,6 +74,10 @@
     {% block body %}{% endblock %}
 </div>
 
-{% block foot_javascripts %}{% endblock %}
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+{% block foot_javascripts %}
+
+{% endblock %}
 </body>
 </html>

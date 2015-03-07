@@ -45,6 +45,7 @@
                     <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" /></br>
                 </div>
             </div>
+            {{ render(controller("HWIOAuthBundle:Connect:connect")) }}
              <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
         </form>
         <div class="row">

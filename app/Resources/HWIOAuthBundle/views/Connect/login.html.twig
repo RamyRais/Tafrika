@@ -1,0 +1,23 @@
+{#% extends '::layout.html.twig' %#}
+
+{% block body %}
+    {% if error is defined and error %}
+        <span>{{ error }}</span>
+    {% endif %}
+    {% for owner in hwi_oauth_resource_owners() %}
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+                <a class="btn btn-block btn-lg btn-social btn-{{ owner | trans({}, 'HWIOAuthBundle') }} btn-{{ owner | trans({}, 'HWIOAuthBundle') }}-plus" href="{{ hwi_oauth_login_url(owner) }}">
+                    <i class="fa fa-{{ owner | trans({}, 'HWIOAuthBundle') }}
+                fa-{{ owner | trans({}, 'HWIOAuthBundle') }}-plus" >
+                    </i>{{ owner | trans({}, 'HWIOAuthBundle') }} كونكتي بل
+                </a></br>
+            </div>
+        </div>
+
+{#
+    <a href="{{ hwi_oauth_login_url(owner) }}">{{ owner | trans({}, 'HWIOAuthBundle') }}</a> <br />
+#}
+    {% endfor %}
+{% endblock body %}
