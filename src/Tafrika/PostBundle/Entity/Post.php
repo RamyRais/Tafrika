@@ -59,6 +59,15 @@ class Post
     private $likes;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="nsfw", type="boolean")
+     * @Assert\Type(type="bool")
+     *
+     */
+    private $NSFW;
+
+    /**
      *
      * @var type User
      * @ORM\ManyToOne(targetEntity="Tafrika\UserBundle\Entity\User")
@@ -216,5 +225,28 @@ class Post
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set NSFW
+     *
+     * @param boolean $nSFW
+     * @return Post
+     */
+    public function setNSFW($nSFW)
+    {
+        $this->NSFW = $nSFW;
+
+        return $this;
+    }
+
+    /**
+     * Get NSFW
+     *
+     * @return boolean 
+     */
+    public function getNSFW()
+    {
+        return $this->NSFW;
     }
 }
