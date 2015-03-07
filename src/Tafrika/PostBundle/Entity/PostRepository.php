@@ -13,11 +13,16 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class PostRepository extends EntityRepository
 {
-    public function findFresh($postPerPage, $page){
+    public function findFresh($postPerPage, $page, $nsfw){
         if($page<1){
             throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
         }
+
         $query = $this->createQueryBuilder('p');
+        if($nsfw==1) {
+            $query->where('p.NSFW = :nsfw')
+                ->setParameter('nsfw', $nsfw);
+        }
         $query->orderBy('p.createdAt','DESC');
         $query->getQuery();
         $query->setFirstResult( ($page - 1)* $postPerPage);

@@ -14,11 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 class GeneralController extends  Controller{
 
     public function indexAction($page = 1){
+        $session = $this->get('request')->getSession();
+        if($session->get('nsfw')===null){
+            $nsfw = 1;
+            $session->set('nsfw',$nsfw);
+        }else{
+            $nsfw = $session->get('nsfw');
+        }
         $em = $this->getDoctrine()->getManager();
         $rep = $em->getRepository('TafrikaPostBundle:Post');
         $postPerPage = $this->container->getParameter('postPerPage');
-        $posts = $rep->findFresh($postPerPage,$page);
-
+        $posts = $rep->findFresh($postPerPage,$page,$nsfw);
         $user = $this->get('security.context')->getToken()->getUser();
 
 
@@ -46,5 +52,13 @@ class GeneralController extends  Controller{
             'pageNumber'=>ceil(count($posts)/$postPerPage)));
         $response->setContent($content);
         return $response;
+    }
+
+    public function changeNSFWStateAction(){
+        $session = $this->get('request')->getSession();
+        $nsfw = $session->get('nsfw');
+        $nsfw = $nsfw == 1 ? 0 : 1;
+        $session->set('nsfw',$nsfw);
+        return $this->redirect($this->generateUrl('tafrika_index'));
     }
 }

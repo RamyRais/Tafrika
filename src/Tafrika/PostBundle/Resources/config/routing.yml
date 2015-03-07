@@ -57,6 +57,10 @@ comment_add:
     defaults: { _controller: TafrikaPostBundle:Comment:addComment }
     methods: [POST]
 
+nsfw_change:
+    path: /change_nsfw
+    defaults: { _controller: TafrikaPostBundle:General:changeNSFWState }
+
 vote_up_status:
     path: /status/{status_id}/voteUp
     defaults: { _controller: TafrikaPostBundle:Status:voteUpStatus }
