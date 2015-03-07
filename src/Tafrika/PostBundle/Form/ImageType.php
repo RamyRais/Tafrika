@@ -14,8 +14,7 @@ class ImageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title','text')
-                ->add('file','file');
+        $builder->add('file','file');
     }
     
     /**
@@ -31,8 +30,11 @@ class ImageType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName(){
         return 'tafrika_postbundle_image';
+    }
+
+    public function getParent(){
+        return new PostType();
     }
 }

@@ -14,8 +14,7 @@ class StatusType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title','text')
-                ->add('content','textarea');
+        $builder->add('content','textarea');
     }
     
     /**
@@ -34,5 +33,9 @@ class StatusType extends AbstractType
     public function getName()
     {
         return 'tafrika_postbundle_status';
+    }
+
+    public function getParent(){
+        return new PostType();
     }
 }

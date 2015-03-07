@@ -14,8 +14,7 @@ class VideoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title','text')
-                ->add('url','url');
+        $builder->add('url','url');
     }
     
     /**
@@ -34,5 +33,9 @@ class VideoType extends AbstractType
     public function getName()
     {
         return 'tafrika_postbundle_video';
+    }
+
+    public function getParent(){
+        return new PostType();
     }
 }
