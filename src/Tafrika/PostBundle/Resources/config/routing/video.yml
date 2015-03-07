@@ -1,0 +1,15 @@
+video_add:
+    path: /add
+    defaults: { _controller: TafrikaPostBundle:Video:addVideo }
+
+video_show:
+    path: /{video_id}
+    defaults: { _controller: TafrikaPostBundle:Video:showVideo }
+    requirements:
+        video_id: \d+
+
+video_edit:
+    path: /{video_id}
+    defaults: { _controller: TafrikaPostBundle:Video:editVideo }
+    requirements:
+        video_id: \d+

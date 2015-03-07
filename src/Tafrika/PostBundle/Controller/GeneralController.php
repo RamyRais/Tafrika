@@ -10,6 +10,7 @@ namespace Tafrika\PostBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Tafrika\PostBundle\Entity\Post ;
 
 class GeneralController extends  Controller{
 
@@ -60,5 +61,52 @@ class GeneralController extends  Controller{
         $nsfw = $nsfw == 1 ? 0 : 1;
         $session->set('nsfw',$nsfw);
         return $this->redirect($this->generateUrl('tafrika_index'));
+    }
+
+    public function signalNSFWAction(){
+        $request = $this->get('request');
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            $request->getSession()->set('_security.main.target_path', $request->getUri());
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        if($request->isXmlHttpRequest()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $post_id  = $request->request->get('post_id');
+            $post = $entityManager->getRepository('TafrikaPostBundle:Post')->find($post_id);
+            if($post != null){
+                $post->setSignalNsfw($post->getSignalNsfw()+1);
+                if($post->getSignalNsfw() >= Post::MAX_SIGNAL_NUMBER_NSFW){
+                    $post->setNSFW(true);
+                }
+                $entityManager->persist($post);
+                $entityManager->flush();
+            }else{
+                $message = json_encode(array('message' => 'post is null'));
+                return new Response($message, 419);
+            }
+        }
+        return new Response("signal added");
+    }
+
+    public function signalPornAction(){
+        $request = $this->get('request');
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            $request->getSession()->set('_security.main.target_path', $request->getUri());
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        if($request->isXmlHttpRequest()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $post_id  = $request->request->get('post_id');
+            $post = $entityManager->getRepository('TafrikaPostBundle:Post')->find($post_id);
+            if($post != null){
+                $post->setSignalPorn($post->getSignalPorn()+1);
+                $entityManager->persist($post);
+                $entityManager->flush();
+            }else{
+                $message = json_encode(array('message' => 'post is null'));
+                return new Response($message, 419);
+            }
+        }
+        return new Response("signal added");
     }
 }

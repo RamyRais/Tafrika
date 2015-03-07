@@ -1,0 +1,15 @@
+status_add:
+    path: /add
+    defaults: { _controller: TafrikaPostBundle:Status:addStatus }
+
+status_show:
+    path: /{status_id}
+    defaults: { _controller: TafrikaPostBundle:Status:showStatus }
+    requirements:
+        status_id: \d+
+
+status_edit:
+    path: /{status_id}/edit
+    defaults: { _controller: TafrikaPostBundle:Status:editStatus }
+    requirements:
+        status_id: \d+

@@ -1,0 +1,9 @@
+comment_add:
+    path: /add_comment
+    defaults: { _controller: TafrikaPostBundle:Comment:addComment }
+    methods: [POST]
+
+comment_remove:
+    path: /remove_comment
+    defaults: { _controller: TafrikaPostBundle:Comment:removeComment }
+    methods: [POST]

@@ -4,58 +4,25 @@ tafrika_index:
     requirements:
         page: \d+
 
-status_add:
-    path: /status/add
-    defaults: { _controller: TafrikaPostBundle:Status:addStatus }
+Tafrika_status:
+    resource: "@TafrikaPostBundle/Resources/config/routing/status.yml"
+    prefix: /status
 
-status_show:
-    path: /status/{status_id}
-    defaults: { _controller: TafrikaPostBundle:Status:showStatus }
-    requirements:
-        status_id: \d+
+Tafrika_video:
+    resource: "@TafrikaPostBundle/Resources/config/routing/video.yml"
+    prefix: /video
 
-status_edit:
-    path: /status/{status_id}/edit
-    defaults: { _controller: TafrikaPostBundle:Status:editStatus }
-    requirements:
-        status_id: \d+
+Tafrika_image:
+    resource: "@TafrikaPostBundle/Resources/config/routing/image.yml"
+    prefix: /image
 
-video_add:
-    path: /video/add
-    defaults: { _controller: TafrikaPostBundle:Video:addVideo }
+Tafrika_comment:
+    resource: "@TafrikaPostBundle/Resources/config/routing/comment.yml"
+    prefix: /comment
 
-video_show:
-    path: /video/{video_id}
-    defaults: { _controller: TafrikaPostBundle:Video:showVideo }
-    requirements:
-        video_id: \d+
-
-video_edit:
-    path: /video/{video_id}
-    defaults: { _controller: TafrikaPostBundle:Video:editVideo }
-    requirements:
-        video_id: \d+
-
-image_add:
-    path: /image/add
-    defaults: { _controller: TafrikaPostBundle:Image:addImage }
-
-image_show:
-    path: /image/{image_id}
-    defaults: { _controller: TafrikaPostBundle:Image:showImage }
-    requirements:
-        image_id: \d+
-
-image_edit:
-    path: /image/{image_id}/edit
-    defaults: { _controller: TafrikaPostBundle:Image:editImage }
-    requirements:
-        image_id: \d+
-
-comment_add:
-    path: /add_comment
-    defaults: { _controller: TafrikaPostBundle:Comment:addComment }
-    methods: [POST]
+Tafrika_post:
+    resource: "@TafrikaPostBundle/Resources/config/routing/post.yml"
+    prefix: /post
 
 nsfw_change:
     path: /change_nsfw

@@ -1,0 +1,9 @@
+signal_nsfw:
+    path: /nsfw_post
+    defaults: { _controller: TafrikaPostBundle:General:signalNSFW }
+    methods: [POST]
+
+signal_porn:
+    path: /porn_post
+    defaults: { _controller: TafrikaPostBundle:General:signalPorn }
+    methods: [POST]

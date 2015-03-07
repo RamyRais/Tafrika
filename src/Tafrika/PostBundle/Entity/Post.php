@@ -20,8 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Post
 {
     const TYPE = 'POST';
-
-
+    const MAX_SIGNAL_NUMBER_NSFW = 500;
+    const MAX_SIGNAL_NUMBER_PORN = 500;
     /**
      * @var integer
      *
@@ -68,6 +68,20 @@ class Post
     private $NSFW;
 
     /**
+     * @@var integer
+     *
+     * @ORM\Column(name="signal_nsfw", type="integer")
+     */
+    private $signal_nsfw;
+
+    /**
+     * @@var integer
+     *
+     * @ORM\Column(name="signal_porn", type="integer")
+     */
+    private $signal_porn;
+
+    /**
      *
      * @var type User
      * @ORM\ManyToOne(targetEntity="Tafrika\UserBundle\Entity\User")
@@ -84,6 +98,8 @@ class Post
     public function __construct() {
         $this->likes = 0;
         $this->createdAt = new \DateTime('now',new \DateTimeZone("UTC"));
+        $this->signal_nsfw = 0;
+        $this->signal_porn = 0;
     }
     
     /**
@@ -248,5 +264,51 @@ class Post
     public function getNSFW()
     {
         return $this->NSFW;
+    }
+
+    /**
+     * Set signal_nsfw
+     *
+     * @param integer $signalNsfw
+     * @return Post
+     */
+    public function setSignalNsfw($signalNsfw)
+    {
+        $this->signal_nsfw = $signalNsfw;
+
+        return $this;
+    }
+
+    /**
+     * Get signal_nsfw
+     *
+     * @return integer 
+     */
+    public function getSignalNsfw()
+    {
+        return $this->signal_nsfw;
+    }
+
+    /**
+     * Set signal_porn
+     *
+     * @param integer $signalPorn
+     * @return Post
+     */
+    public function setSignalPorn($signalPorn)
+    {
+        $this->signal_porn = $signalPorn;
+
+        return $this;
+    }
+
+    /**
+     * Get signal_porn
+     *
+     * @return integer 
+     */
+    public function getSignalPorn()
+    {
+        return $this->signal_porn;
     }
 }

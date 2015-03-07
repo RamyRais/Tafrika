@@ -12,6 +12,24 @@
                 {% if post._type == "STATUS" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-warning">سنيالي</button>
+                                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a id="signal_nsfw" href="{{ path('signal_nsfw') }}" data-toggle="tooltip" data-placement="right"
+                                           title="سنيالي لحاجات لفيهم كلام زايد ولا قباحة" content="{{ post.id }}">NSFW
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="signal_porn" href="{{ path('signal_porn') }}" data-toggle="tooltip" data-placement="right"
+                                           title="سنيالي لحاجات لفيهم سكس" content="{{ post.id }}">-18</a>
+                                    </li>
+                                </ul>
+                            </div>
                             <a href="{{ path('status_show', {'status_id': post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel-body">
@@ -40,6 +58,24 @@
                 {% elseif post._type == "VIDEO" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-warning">سنيالي</button>
+                                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a id="signal_nsfw" href="{{ path('signal_nsfw') }}" data-toggle="tooltip" data-placement="right"
+                                           title="سنيالي لحاجات لفيهم كلام زايد ولا قباحة" content="{{ post.id }}">NSFW
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="signal_porn" href="{{ path('signal_porn') }}" data-toggle="tooltip" data-placement="right"
+                                           title="سنيالي لحاجات لفيهم سكس" content="{{ post.id }}">-18</a>
+                                    </li>
+                                </ul>
+                            </div>
                             <a href="{{ path('video_show', {'video_id':post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel panel-body">
@@ -72,6 +108,24 @@
                 {% elseif post._type == "IMAGE" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-warning">سنيالي</button>
+                                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a id="signal_nsfw" href="{{ path('signal_nsfw') }}" data-toggle="tooltip" data-placement="right"
+                                           title="سنيالي لحاجات لفيهم كلام زايد ولا قباحة" content="{{ post.id }}">NSFW
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="signal_porn" href="{{ path('signal_porn') }}" data-toggle="tooltip" data-placement="right"
+                                           title="سنيالي لحاجات لفيهم سكس" content="{{ post.id }}">-18</a>
+                                    </li>
+                                </ul>
+                            </div>
                             <a href="{{ path('image_show', {'image_id':post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel-body">
@@ -133,6 +187,7 @@
         </div>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="{{ asset('js/signal.js') }}"></script>
     <script>
 
         $(function(){

@@ -21,7 +21,7 @@ class PostRepository extends EntityRepository
         $query = $this->createQueryBuilder('p');
         if($nsfw==1) {
             $query->where('p.NSFW = :nsfw')
-                ->setParameter('nsfw', $nsfw);
+                ->setParameter('nsfw', 0);
         }
         $query->orderBy('p.createdAt','DESC');
         $query->getQuery();

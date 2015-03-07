@@ -24,7 +24,7 @@ class CommentController extends Controller{
             $request->getSession()->set('_security.main.target_path', $request->getUri());
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         if($request->isXmlHttpRequest()) {
             $post_id = $request->request->get('post_id');
             $entityManager = $this->getDoctrine()->getManager();
@@ -46,7 +46,30 @@ class CommentController extends Controller{
                 }
             }
         }
-        return new Response("great");
+        return new Response("comment added");
+    }
+
+    public function removeCommentAction(){
+        $request = $this->get('request');
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            $request->getSession()->set('_security.main.target_path', $request->getUri());
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        $user = $this->getUser();
+        if($request->isXmlHttpRequest()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment_id  = $request->request->get('comment_id');
+            $comment = $entityManager->getRepository('TafrikaPostBundle:Comment')->find($comment_id);
+            if($comment->getUser() == $user){
+                $entityManager->remove($comment);
+                $entityManager->flush();
+            }else{
+                $message = json_encode(array('message' => 'you don\'t have the right to delete others user\' comment'));
+                return new Response($message, 419);
+            }
+
+        }
+        return new Response("comment deleted");
     }
 
     /**

@@ -11,6 +11,24 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-warning">سنيالي</button>
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a id="signal_nsfw" href="{{ path('signal_nsfw') }}" data-toggle="tooltip" data-placement="right"
+                               title="سنيالي لحاجات لفيهم كلام زايد ولا قباحة" content="{{ video.id }}">NSFW
+                            </a>
+                        </li>
+                        <li>
+                            <a id="signal_porn" href="{{ path('signal_porn') }}" data-toggle="tooltip" data-placement="right"
+                               title="سنيالي لحاجات لفيهم سكس" content="{{ video.id }}">-18</a>
+                        </li>
+                    </ul>
+                </div>
                 {% if app.user %}
                     {% if app.user.id == video.user.id %}
                         <a href="{{ path("video_edit",{ "video_id": video.id}) }}" class="btn btn-default pull-right">Modifier</a>
@@ -55,6 +73,9 @@
             <ul class="list-group">
                 {% for comment in list %}
                     <li class="list-group-item">
+                        {% if comment.user == app.user %}
+                            <a id="delete_comment" content="{{ comment.id }}"><i class="fa fa-trash pull-right"></i></a>
+                        {% endif %}
                         <div class="media">
                             <div class="media-left media-middle">
                                 {% if app.user == comment.user%}
@@ -77,6 +98,34 @@
         </div>
     </div>
     </div>
+    <script src="{{ asset('js/signal.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('#delete_comment').on('click',function(e){
+                e.preventDefault();
+                var $this = $(this);
+                var $comment_id = $this.attr('content');
+                if($comment_id===''){
+                    alert("une erreur est servenu try again later");
+                }else{
+                    $.ajax({
+                        url: '{{ path('comment_remove') }}',
+                        type: 'POST',
+                        data: { 'comment_id' : $comment_id },
+                        success: function(data) {
+                            //alert(data.message);
+                            $('#comment_list').load(document.URL +  ' #comment_list');
+                            $('#jquery_div').load(document.URL +  ' #jquery_div');
+                        },
+                        error: function(jq,status,message){
+                            //alert(message);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
     <script>
         $("#comment_form").submit(function() {
 

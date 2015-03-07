@@ -1,0 +1,15 @@
+image_add:
+    path: /add
+    defaults: { _controller: TafrikaPostBundle:Image:addImage }
+
+image_show:
+    path: /{image_id}
+    defaults: { _controller: TafrikaPostBundle:Image:showImage }
+    requirements:
+        image_id: \d+
+
+image_edit:
+    path: /{image_id}/edit
+    defaults: { _controller: TafrikaPostBundle:Image:editImage }
+    requirements:
+        image_id: \d+
