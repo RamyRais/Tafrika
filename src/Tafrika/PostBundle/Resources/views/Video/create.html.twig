@@ -31,6 +31,21 @@
                     </div>
                     <label for="content" class="col-sm-2 control-label">حط ليان يوتيوب</label>
                 </div>
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-11"></div>
+                            <div class="col-sm-1">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(form.NSFW, {'attr': {'id':'NSFW'}}) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="NSFW" class="col-sm-2 control-label">-18</label>
+                </div>
                 {{ form_widget(form._token)}}
                 <div class="form-group">
                     <div class="col-sm-offset-0 col-sm-10">
