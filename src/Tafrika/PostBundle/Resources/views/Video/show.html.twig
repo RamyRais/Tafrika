@@ -43,6 +43,15 @@
                             src="{{ video.url }}">
                     </iframe>
                 </div>
+                <div class="media-heading comment_date pull-right">By
+                    <a
+                        {% if app.user == video.user%}
+                            href="{{ path('fos_user_profile_show') }}"
+                        {% else %}
+                            href="{{ path('user_profile', {'page': 1,'user_id': video.user.id}) }}"
+                        {% endif %}
+                    > {{ video.user.username }} </a> on {{ video.createdAt|date('F d, Y') }}
+                </div>
             </div>
             <div class="panel-footer">
                 <div class="row">

@@ -43,6 +43,15 @@
 
                 <div class="clearfix"></div>
                     {{ status.content }}
+                    <div class="media-heading comment_date pull-right">By
+                    <a
+                        {% if app.user == status.user%}
+                            href="{{ path('fos_user_profile_show') }}"
+                        {% else %}
+                            href="{{ path('user_profile', {'page': 1,'user_id': status.user.id}) }}"
+                        {% endif %}
+                    > {{ status.user.username }} </a> on {{ status.createdAt|date('F d, Y') }}
+                    </div>
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -78,12 +87,13 @@
                     {% endif %}
                     <div class="media">
                         <div class="media-left media-middle">
-                        {% if app.user == comment.user%}
-                            <a href="{{ path('fos_user_profile_show') }}">
-                        {% else %}
-                            <a href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}">
-                        {% endif %}
-                            <img class="media-object" src="{{ comment.user.email|getGravatarImage(40)}}" >
+                            <a
+                            {% if app.user == comment.user%}
+                                href="{{ path('fos_user_profile_show') }}"
+                            {% else %}
+                                href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"
+                            {% endif %}
+                                ><img class="media-object" src="{{ comment.user.email|getGravatarImage(40)}}" >
                             </a>
                         </div>
                         <div class="media-body">
