@@ -24,6 +24,10 @@ Tafrika_post:
     resource: "@TafrikaPostBundle/Resources/config/routing/post.yml"
     prefix: /post
 
+load_followed_posts:
+    path: /followedPost
+    defaults: { _controller: TafrikaPostBundle:General:loadFollowedUserPost }
+
 nsfw_change:
     path: /change_nsfw
     defaults: { _controller: TafrikaPostBundle:General:changeNSFWState }
