@@ -29,4 +29,22 @@ class PostRepository extends EntityRepository
         $query->setMaxResults($postPerPage);
         return new Paginator($query);
     }
+
+    public function findFollowedUserPosts($user, $postPerPage, $page, $nsfw){
+        if($page<1){
+            throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
+        }
+        $query = $this->createQueryBuilder('p');
+        $query->where($query->expr()->in('p.user',':followed'))
+              ->setParameter('followed',$user->getFollowed()->toArray());
+        if($nsfw==1) {
+            $query->andWhere('p.NSFW = :nsfw')
+                ->setParameter('nsfw', 0);
+        }
+        $query->orderBy('p.createdAt','DESC');
+        $query->getQuery();
+        $query->setFirstResult( ($page - 1)* $postPerPage);
+        $query->setMaxResults($postPerPage);
+        return new Paginator($query);
+    }
 }
