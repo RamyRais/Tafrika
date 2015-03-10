@@ -56,7 +56,7 @@
 
 
         {% if app.user %}
-            {{ render(controller('TafrikaPostBundle:Comment:renderComment', {'post_id': image.id } )) }}
+            {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': image.id } )) }}
         {% endif %}
 
         <div id="comment_list">

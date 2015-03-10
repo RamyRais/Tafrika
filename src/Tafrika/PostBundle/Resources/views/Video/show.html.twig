@@ -58,7 +58,7 @@
             </div>
         </div>
         {% if app.user %}
-            {{ render(controller('TafrikaPostBundle:Comment:renderComment', {'post_id': video.id } )) }}
+            {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': video.id } )) }}
         {% endif %}
 
 

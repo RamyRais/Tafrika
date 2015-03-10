@@ -58,7 +58,7 @@
         </div>
 
         {% if app.user %}
-            {{ render(controller('TafrikaPostBundle:Comment:renderComment', {'post_id': status.id } )) }}
+            {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': status.id } )) }}
         {% endif %}
 
         <div id="comment_list">

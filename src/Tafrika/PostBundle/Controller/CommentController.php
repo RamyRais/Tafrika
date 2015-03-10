@@ -77,10 +77,10 @@ class CommentController extends Controller{
      * @return Response
      * @ParamConverter("post", options={"mapping": {"post_id": "id"}})
      */
-    public function renderCommentAction(Post $post){
+    public function renderAddCommentAction(Post $post){
         $comment = new Comment();
         $form = $this->createForm(new CommentType, $comment);
-        return $this->render("TafrikaPostBundle:Comment:show.html.twig",array(
+        return $this->render("TafrikaPostBundle:Comment:create.html.twig",array(
             'form'=> $form->createView(),
             'post'=>$post
         ));
