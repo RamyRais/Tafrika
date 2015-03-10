@@ -1,0 +1,20 @@
+{% macro signalButton(postId) %}
+    <div class="btn-group pull-right">
+        <button type="button" class="btn btn-warning">سنيالي</button>
+        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a id="signal_nsfw" href="{{ path('signal_nsfw') }}" data-toggle="tooltip" data-placement="right"
+                   title="سنيالي لحاجات لفيهم كلام زايد ولا قباحة" content="{{ postId }}">NSFW
+                </a>
+            </li>
+            <li>
+                <a id="signal_porn" href="{{ path('signal_porn') }}" data-toggle="tooltip" data-placement="right"
+                   title="سنيالي لحاجات لفيهم سكس" content="{{ postId }}">-18</a>
+            </li>
+        </ul>
+    </div>
+{% endmacro %}

@@ -1,4 +1,5 @@
 {% extends "::layout.html.twig" %}
+{% import "TafrikaPostBundle:Macros:signal.html.twig" as signal %}
 {% block title %}{{ user.username }} Profile {% endblock %}
 {% block body %}
     <div class="jumbotron">
@@ -23,7 +24,8 @@
                 {% if post._type == "STATUS" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{{ path('status_show', {'status_id': post.id}) }}"> {{ post.title }}</a>
+                            {{ signal.signalButton(post.id) }}
+                            <a href="{{ path('status_show', {'status_id': post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel-body">
                             {{ post.content }}
@@ -51,19 +53,22 @@
                 {% elseif post._type == "VIDEO" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{{ path('video_show', {'video_id':post.id}) }}">{{ post.title }}</a>
+                            {{ signal.signalButton(post.id) }}
+                            <a href="{{ path('video_show', {'video_id':post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel panel-body">
-                            <iframe width="550" height="454"
-                                    src="{{ post.url }}">
-                            </iframe>
+                            <div class="embed-responsive embed-responsive-4by3">
+                                <iframe class="embed-responsive-item"
+                                        src="{{ post.url }}">
+                                </iframe>
+                            </div>
                         </div>
                         <div class="panel-footer">
                             <div class="row">
                                 <div class="col-md-2"><div id="{{ 'count' ~ post.id }}">{{ post.likes }} likes</div></div>
                                 <div class="col-md-1">
                                     <button type="button" id="{{ 'up_button' ~ post.id }}" class="btn btn-default  increment up video">
-                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" id="like"></span>
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                                     </button>
                                 </div>
                                 <div class="col-md-1">
@@ -81,21 +86,22 @@
                 {% elseif post._type == "IMAGE" %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{{ path('image_show', {'image_id':post.id}) }}">{{ post.title }}</a>
+                            {{ signal.signalButton(post.id) }}
+                            <a href="{{ path('image_show', {'image_id':post.id}) }}"><h4>{{ post.title }}</h4></a>
                         </div>
                         <div class="panel-body">
-                            <img src="{{ asset(post.getWebPath) }}" alt="{{ post.title }}" height="500" width="454">
+                            <img src="{{ asset(post.getWebPath) }}" alt="{{ post.title }}" class="img-responsive">
                         </div>
                         <div class="panel-footer">
                             <div class="row">
                                 <div class="col-md-2"><div id="{{ 'count' ~ post.id }}">{{ post.likes }} likes</div></div>
                                 <div class="col-md-1">
                                     <button type="button" id="{{ 'up_button' ~ post.id }}" class="btn btn-default  increment up image">
-                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" id="like"></span>
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                                     </button>
                                 </div>
                                 <div class="col-md-1">
-                                    <button type="button" id="{{ 'down_button' ~ post.id }}" class="btn btn-default  increment down image">
+                                    <button type="button" id="{{ 'down_button' ~ post.id }}" class="btn btn-default increment down image">
                                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                                     </button>
                                 </div>
