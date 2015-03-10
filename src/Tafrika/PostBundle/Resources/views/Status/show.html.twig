@@ -1,5 +1,6 @@
 {% extends "::layout.html.twig" %}
 {% import "TafrikaPostBundle:Macros:signal.html.twig" as signal %}
+{% import "TafrikaPostBundle:Macros:comment.html.twig" as commentShow %}
 
 {% block body_javascripts %}
     <div id="fb-root"></div>
@@ -61,34 +62,7 @@
             {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': status.id } )) }}
         {% endif %}
 
-        <div id="comment_list">
-        <ul class="list-group">
-            {% for comment in list %}
-                <li class="list-group-item">
-                    {% if comment.user == app.user %}
-                        <a id="delete_comment" content="{{ comment.id }}"><i class="fa fa-trash pull-right"></i></a>
-                    {% endif %}
-                    <div class="media">
-                        <div class="media-left media-middle">
-                            <a
-                            {% if app.user == comment.user%}
-                                href="{{ path('fos_user_profile_show') }}"
-                            {% else %}
-                                href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"
-                            {% endif %}
-                                ><img class="media-object" src="{{ comment.user.email|getGravatarImage(40)}}" >
-                            </a>
-                        </div>
-                        <div class="media-body">
-                                <h6 class="media-heading comment_date">{{ comment.date|date }}</h6>
-                                {{ comment.content }}
-
-                        </div>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-        </div>
+        {{ commentShow.renderCommentList(comments) }}
 
     </div>
     </div>

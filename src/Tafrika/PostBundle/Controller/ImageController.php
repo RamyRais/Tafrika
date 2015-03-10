@@ -72,10 +72,10 @@ class ImageController extends Controller{
             $user_vote="vote_down";
 
         }
-        $list=$this->getDoctrine()
+        $comments=$this->getDoctrine()
             ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $image));
         return $this->render('TafrikaPostBundle:Image:show.html.twig',array(
-            'image'=>$image,'list'=>$list,'user_vote'=>$user_vote
+            'image'=>$image,'comments'=>$comments,'user_vote'=>$user_vote
         ));
     }
 

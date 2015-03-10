@@ -74,10 +74,10 @@ class StatusController extends Controller{
             $user_vote="vote_down";
 
         }
-        $list=$this->getDoctrine()
+        $comments=$this->getDoctrine()
             ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $status));
         return $this->render('TafrikaPostBundle:Status:show.html.twig',array(
-            'status'=>$status,'list'=>$list,'user_vote'=>$user_vote
+            'status'=>$status,'comments'=>$comments,'user_vote'=>$user_vote
         ));
     }
 
