@@ -1,6 +1,6 @@
 {% extends "::layout.html.twig" %}
-{% import "TafrikaPostBundle:Macros:signal.html.twig" as signal %}
 {% import "TafrikaPostBundle:Macros:comment.html.twig" as commentShow %}
+{% import "TafrikaPostBundle:Macros:post.html.twig" as postRender %}
 
 {% block body_javascripts %}
     <div id="fb-root"></div>
@@ -11,53 +11,7 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                {{ signal.signalButton(video.id) }}
-                {% if app.user %}
-                    {% if app.user.id == video.user.id %}
-                        <a href="{{ path("video_edit",{ "video_id": video.id}) }}" class="btn btn-default pull-right">Modifier</a>
-                    {% endif %}
-                {% endif %}
-                <h4>{{ video.title }}</h4>
-            </div>
-            <div class="panel-body">
-                <div class="clearfix"></div>
-                <div class="embed-responsive embed-responsive-4by3">
-                    <iframe class="embed-responsive-item"
-                            src="{{ video.url }}">
-                    </iframe>
-                </div>
-                <div class="media-heading comment_date pull-right">By
-                    <a
-                        {% if app.user == video.user%}
-                            href="{{ path('fos_user_profile_show') }}"
-                        {% else %}
-                            href="{{ path('user_profile', {'page': 1,'user_id': video.user.id}) }}"
-                        {% endif %}
-                    > {{ video.user.username }} </a> on {{ video.createdAt|date('F d, Y') }}
-                </div>
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-md-2"> <div id="count">{{ video.likes }} likes</div></div>
-                    <div id="thumbs_up" class="col-md-1">
-                        <button  type="button" id="up_button" class="btn btn-default increment up">
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" id="down_button" class="btn btn-default increment down">
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2">
-                        <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ postRender.postShow(video,true) }}
         {% if app.user %}
             {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': video.id } )) }}
         {% endif %}

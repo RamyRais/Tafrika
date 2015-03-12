@@ -1,0 +1,103 @@
+{#
+    onPostPage: boolean, are we in the page that shows the post
+#}
+{% macro postShow(post, onPostPage) %}
+    <div class="panel panel-default">
+        {{ _self.postHead(post, onPostPage) }}
+        {{ _self.postBody(post, onPostPage) }}
+        {{ _self.postFooter(post) }}
+    </div>
+{% endmacro %}
+
+{% macro  postHead(post, onPostPage)%}
+    <div class="panel-heading">
+        {% import "TafrikaPostBundle:Macros:signal.html.twig" as signal %}
+        {{ signal.signalButton(post.id) }}
+
+        {% if app.user and onPostPage %}
+            {% if app.user.id == post.user.id %}
+                {% if post._type == "STATUS" %}
+                    <a href="{{ path("status_edit",{ "status_id": post.id}) }}"
+                       class="btn btn-default pull-right">Modifier</a>
+                {% elseif post._type == "IMAGE" %}
+                    <a href="{{ path("image_edit",{ "image_id": post.id}) }}"
+                       class="btn btn-default pull-right">Modifier</a>
+                {% elseif post._type == "VIDEO" %}
+                    <a href="{{ path("video_edit",{ "video_id": post.id}) }}"
+                       class="btn btn-default pull-right">Modifier</a>
+                {% endif %}
+
+            {% endif %}
+        {% endif %}
+        <a href="{{ path('post_show', {'post_id': post.id}) }}"><h4>{{ post.title }}</h4></a>
+    </div>
+{% endmacro %}
+
+{#
+    onPostPage: boolean, are we in the page that shows the post
+#}
+{% macro postBody(post, onPostPage) %}
+    <div class="panel-body">
+        <div class="clearfix"></div>
+        {% if post._type == "STATUS" %}
+            {{ _self.statusBody(post) }}
+        {% elseif post._type == "IMAGE" %}
+            {{ _self.imageBody(post) }}
+        {% elseif post._type == "VIDEO" %}
+            {{ _self.videoBody(post) }}
+        {% endif %}
+        {% if onPostPage %}
+            <div class="media-heading comment_date pull-right">By
+                <a
+                    {% if app.user == post.user%}
+                        href="{{ path('fos_user_profile_show') }}"
+                    {% else %}
+                        href="{{ path('user_profile', {'page': 1,'user_id': post.user.id}) }}"
+                    {% endif %}
+                > {{ post.user.username }} </a> on {{ post.createdAt|date('F d, Y') }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro postFooter(post) %}
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-2"> <div id="count">{{ post.likes }} likes</div></div>
+            <div id="thumbs_up" class="col-md-1">
+                <button  type="button" id="up_button" class="btn btn-default increment up">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" id="down_button" class="btn btn-default increment down">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-2">
+                <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro videoBody(video) %}
+    <div class="embed-responsive embed-responsive-4by3">
+        <iframe class="embed-responsive-item"
+                src="{{ video.url }}">
+        </iframe>
+    </div>
+{% endmacro %}
+
+{% macro imageBody(image) %}
+    <div >
+        <img src="{{ asset(image.getWebPath) }}" alt="{{ image.title }}" class="img-responsive">
+    </div>
+{% endmacro %}
+
+{% macro statusBody(status) %}
+    <div>
+        {{ status.content }}
+    </div>
+{% endmacro %}
