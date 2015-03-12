@@ -1,3 +1,9 @@
+post_show:
+    path: show/{post_id}
+    defaults: { _controller: TafrikaPostBundle:Post:showPost }
+    requirements:
+        post_id: \d+
+
 signal_nsfw:
     path: /nsfw_post
     defaults: { _controller: TafrikaPostBundle:General:signalNSFW }
