@@ -88,3 +88,10 @@ hwi_oauth:
           scope:               "email profile"
   http_client:
       timeout: 10000
+
+
+      # Stof\DoctrineExtensionBundle configuration
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
