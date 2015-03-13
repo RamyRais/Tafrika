@@ -36,7 +36,7 @@ class ProfileController extends Controller
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
-        $postPerPage = $this->container->getParameter('postPerPage');
+        $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
         $posts = $repository->findBy(array('user'=>$user->getId()),
@@ -121,7 +121,7 @@ class ProfileController extends Controller
      * @ParamConverter("user", options={"mapping": {"user_id": "id"}})
      */
     public function showOtherUserProfileAction(User $user, $page){
-        $postPerPage = $this->container->getParameter('postPerPage');
+        $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
         $posts = $repository->findBy(array('user'=>$user->getId()),

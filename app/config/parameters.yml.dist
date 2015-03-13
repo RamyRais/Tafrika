@@ -13,7 +13,7 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
-    postPerPage: 10
+    POST_PER_PAGE: %POST_PER_PAGE%
     COMMENTS_PER_LOAD: %COMMENTS_PER_LOAD%
     oauth.facebook.id: ~
     oauth.facebook.secret: ~

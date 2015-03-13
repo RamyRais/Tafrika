@@ -24,7 +24,7 @@ class GeneralController extends  Controller{
         }
         $em = $this->getDoctrine()->getManager();
         $rep = $em->getRepository('TafrikaPostBundle:Post');
-        $postPerPage = $this->container->getParameter('postPerPage');
+        $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $posts = $rep->findFresh($postPerPage,$page,$nsfw);
         $user = $this->get('security.context')->getToken()->getUser();
 
@@ -71,7 +71,7 @@ class GeneralController extends  Controller{
         }
         $em = $this->getDoctrine()->getManager();
         $rep = $em->getRepository('TafrikaPostBundle:Post');
-        $postPerPage = $this->container->getParameter('postPerPage');
+        $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $posts = $rep->findFollowedUserPosts($user,$postPerPage,$page,$nsfw);
 
         $array=array();
@@ -104,7 +104,7 @@ class GeneralController extends  Controller{
         $nsfw = $session->get('nsfw');
         $nsfw = $nsfw == 1 ? 0 : 1;
         $session->set('nsfw',$nsfw);
-        return $this->redirect($this->generateUrl('tafrika_index'));
+        return $this->redirect($this->get('request')->headers->get('referer'));
     }
 
     public function signalNSFWAction(){

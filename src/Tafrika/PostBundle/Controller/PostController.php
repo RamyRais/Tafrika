@@ -57,4 +57,22 @@ class PostController extends Controller{
 
     }
 
+    /**
+     * @ParamConverter("post", options={"mapping": {"post_id": "id"}})
+     */
+    public function deletePostAction(Post $post){
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirect($this->generateUrl('post_show', array('post_id'=>$post->getId())));
+        } else{
+            $user = $this->get('security.context')->getToken()->getUser();
+            if($user != $post->getUser()){
+                return $this->redirect($this->generateUrl('post_show', array('post_id'=>$post->getId())));
+            }
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($post);
+        $entityManager->flush();
+        return $this->redirect($this->generateUrl('fos_user_profile_show'));
+
+    }
 }
