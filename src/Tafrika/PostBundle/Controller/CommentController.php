@@ -85,4 +85,21 @@ class CommentController extends Controller{
             'post'=>$post
         ));
     }
+
+    public function loadCommentsOfPostAction(){
+        $entityManager = $this->getDoctrine()->getManager();
+        $request = $this->get('request');
+        $post_id = $request->request->get('post_id');
+        $post = $entityManager->getRepository('TafrikaPostBundle:Post')->find($post_id);
+        $page = $request->request->get('page');
+        $commentPerPage = $this->container->getParameter('COMMENTS_PER_LOAD');
+        $comments = $entityManager->getRepository('TafrikaPostBundle:Comment')
+                                  ->findCommentByPost($page,$commentPerPage,$post);
+        $response = new JsonResponse();
+        $response->setData($this->renderView("TafrikaPostBundle:Comment:showCommentsOfPost.html.twig",array(
+            "comments"=>$comments)));
+        return $response;
+
+    }
+
 }
