@@ -7,3 +7,8 @@ comment_remove:
     path: /remove_comment
     defaults: { _controller: TafrikaPostBundle:Comment:removeComment }
     methods: [POST]
+
+comment_load:
+    path: /load
+    defaults: { _controller: TafrikaPostBundle:Comment:loadCommentsOfPost }
+    methods: [POST]
