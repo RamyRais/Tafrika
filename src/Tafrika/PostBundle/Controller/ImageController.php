@@ -72,8 +72,9 @@ class ImageController extends Controller{
             $user_vote="vote_down";
 
         }
-        $comments=$this->getDoctrine()
-            ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $image));
+        $commentPerLoad = $this->container->getParameter('COMMENTS_PER_LOAD');
+        $comments=$this->getDoctrine()->getRepository('TafrikaPostBundle:Comment')
+                ->findCommentByPost(1,$commentPerLoad,$image);
         return $this->render('TafrikaPostBundle:Image:show.html.twig',array(
             'image'=>$image,'comments'=>$comments,'user_vote'=>$user_vote
         ));

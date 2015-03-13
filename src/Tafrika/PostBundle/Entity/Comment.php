@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Comment
 {
+
+    const COMMENTS_PER_LOAD = 1;
     /**
      * @var integer
      *
@@ -28,7 +30,7 @@ class Comment
      * @ORM\Column(name="createdAt", type="datetime")
      * @Assert\DateTime()
      */
-    private $date;
+    private $createdAt;
 
     /**
      * @var string
@@ -54,7 +56,7 @@ class Comment
     private $user;
 
     public function __construct() {
-        $this->date = new \DateTime('now',new \DateTimeZone("UTC"));
+        $this->createdAt = new \DateTime('now',new \DateTimeZone("UTC"));
     }
 
     /**
@@ -137,25 +139,25 @@ class Comment
     }
 
     /**
-     * Set date
+     * Set createdAt
      *
-     * @param \DateTime $date
+     * @param \DateTime $createdAt
      * @return Comment
      */
-    public function setDate($date)
+    public function setCreatedAt($createdAt)
     {
-        $this->date = $date;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get createdAt
      *
      * @return \DateTime 
      */
-    public function getDate()
+    public function getCreatedAt()
     {
-        return $this->date;
+        return $this->createdAt;
     }
 }

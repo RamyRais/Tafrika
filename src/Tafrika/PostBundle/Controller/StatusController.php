@@ -74,8 +74,9 @@ class StatusController extends Controller{
             $user_vote="vote_down";
 
         }
-        $comments=$this->getDoctrine()
-            ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $status));
+        $commentPerLoad = $this->container->getParameter('COMMENTS_PER_LOAD');
+        $comments=$this->getDoctrine()->getRepository('TafrikaPostBundle:Comment')
+            ->findCommentByPost(1,$commentPerLoad,$status);
         return $this->render('TafrikaPostBundle:Status:show.html.twig',array(
             'status'=>$status,'comments'=>$comments,'user_vote'=>$user_vote
         ));

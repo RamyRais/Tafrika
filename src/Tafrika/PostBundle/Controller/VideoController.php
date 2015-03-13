@@ -73,8 +73,9 @@ class VideoController extends  Controller{
             $user_vote="vote_down";
 
         }
-        $comments=$this->getDoctrine()
-            ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $video));
+        $commentPerLoad = $this->container->getParameter('COMMENTS_PER_LOAD');
+        $comments=$this->getDoctrine()->getRepository('TafrikaPostBundle:Comment')
+            ->findCommentByPost(1,$commentPerLoad,$video);
         return $this->render('TafrikaPostBundle:Video:show.html.twig',array(
             'video'=>$video,'comments'=>$comments,'user_vote'=>$user_vote
         ));

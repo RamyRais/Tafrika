@@ -1,10 +1,10 @@
-{% macro renderCommentList(comments) %}
+{% macro renderCommentList(comments, post) %}
     <div id="comment_list">
-        <ul class="list-group">
+        <ul id="test" class="list-group">
             {% for comment in comments %}
                 <li class="list-group-item">
                     {% if comment.user == app.user %}
-                        <a id="delete_comment" content="{{ comment.id }}"><i class="fa fa-trash pull-right"></i></a>
+                        <a id="delete_comment" content="{{ comment.id }}" href="{{ path('comment_remove') }}"><i class="fa fa-trash pull-right"></i></a>
                     {% endif %}
                     <div class="media">
                         <div class="media-left media-middle">
@@ -18,12 +18,15 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h6 class="media-heading comment_date">{{ comment.date|date }}</h6>
+                            <h6 class="media-heading comment_date">{{ comment.createdAt|createdAt }}</h6>
                             {{ comment.content }}
                         </div>
                     </div>
                 </li>
             {% endfor %}
         </ul>
-        </div>
+        <a id="load_comment_link" href="{{ path('comment_load') }}" content="{{ post.id }}" commentPerLoad="{{COMMENTS_PER_LOAD}}" > load more comment</a>
+    </div>
+    <script src="{{ asset('js/loadComment.js') }}"></script>
+    <script src="{{ asset('js/deleteComment.js') }}"></script>
 {% endmacro %}

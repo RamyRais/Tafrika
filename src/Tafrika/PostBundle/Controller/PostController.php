@@ -38,8 +38,9 @@ class PostController extends Controller{
             $user_vote="vote_down";
 
         }
-        $comments=$this->getDoctrine()
-            ->getRepository('TafrikaPostBundle:Comment')->findBy(array('post' => $post));
+        $commentPerLoad = $this->container->getParameter('COMMENTS_PER_LOAD');
+        $comments=$this->getDoctrine()->getRepository('TafrikaPostBundle:Comment')
+                       ->findCommentByPost(1,$commentPerLoad,$post);
         if($post->get_type()=="IMAGE") {
             return $this->render('TafrikaPostBundle:Image:show.html.twig', array(
                 'image' => $post, 'comments' => $comments, 'user_vote' => $user_vote
@@ -55,6 +56,5 @@ class PostController extends Controller{
         }
 
     }
-
 
 }

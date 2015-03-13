@@ -24,6 +24,8 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        COMMENTS_PER_LOAD: %COMMENTS_PER_LOAD%
 
 # Assetic Configuration
 assetic:

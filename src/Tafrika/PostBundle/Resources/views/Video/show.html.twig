@@ -21,33 +21,6 @@
     </div>
     <script src="{{ asset('js/signal.js') }}"></script>
     <script>
-        $(document).ready(function(){
-            $('#delete_comment').on('click',function(e){
-                e.preventDefault();
-                var $this = $(this);
-                var $comment_id = $this.attr('content');
-                if($comment_id===''){
-                    alert("une erreur est servenu try again later");
-                }else{
-                    $.ajax({
-                        url: '{{ path('comment_remove') }}',
-                        type: 'POST',
-                        data: { 'comment_id' : $comment_id },
-                        success: function(data) {
-                            //alert(data.message);
-                            $('#comment_list').load(document.URL +  ' #comment_list');
-                            $('#jquery_div').load(document.URL +  ' #jquery_div');
-                        },
-                        error: function(jq,status,message){
-                            //alert(message);
-                        }
-                    });
-                }
-
-            });
-        });
-    </script>
-    <script>
         $("#comment_form").submit(function() {
 
             var url = "{{ path('video_show', {'video_id': video.id}) }}";
