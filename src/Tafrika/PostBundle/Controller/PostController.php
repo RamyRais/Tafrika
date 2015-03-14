@@ -70,6 +70,11 @@ class PostController extends Controller{
             }
         }
         $entityManager = $this->getDoctrine()->getManager();
+        $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                               ->findBy(array('post' => $post));
+        foreach( $votes as $vote){
+            $entityManager->remove($vote);
+        }
         $entityManager->remove($post);
         $entityManager->flush();
         return $this->redirect($this->generateUrl('fos_user_profile_show'));

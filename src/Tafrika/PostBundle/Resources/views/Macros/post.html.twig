@@ -55,6 +55,9 @@
                         href="{{ path('user_profile', {'page': 1,'user_id': post.user.id}) }}"
                     {% endif %}
                 > {{ post.user.username }} </a> on {{ post.createdAt|createdAt('F d, Y') }}
+                </br> {% if app.user == post.user%}
+                        <a href="{{ path('post_delete', {'post_id': post.id}) }}">Delete Post</a>
+                       {% endif%}
             </div>
         {% endif %}
     </div>

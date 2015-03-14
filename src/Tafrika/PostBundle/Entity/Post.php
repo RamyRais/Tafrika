@@ -98,7 +98,8 @@ class Post
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Tafrika\PostBundle\Entity\Comment", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="Tafrika\PostBundle\Entity\Comment", mappedBy="post",
+     *                cascade={"remove"})
      */
     private $comments;
 

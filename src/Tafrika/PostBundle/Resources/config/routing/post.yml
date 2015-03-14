@@ -1,6 +1,12 @@
 post_show:
-    path: show/{post_id}
+    path: /show/{post_id}
     defaults: { _controller: TafrikaPostBundle:Post:showPost }
+    requirements:
+        post_id: \d+
+
+post_delete:
+    path: /delete/{post_id}
+    defaults: { _controller: TafrikaPostBundle:Post:deletePost}
     requirements:
         post_id: \d+
 
