@@ -42,7 +42,7 @@ class ProfileController extends Controller
         $posts = $repository->findBy(array('user'=>$user->getId()),
                                     array('createdAt'=>'desc'),
                                     $postPerPage,
-                                    $page);
+                                    $page-1);
         $array=array();
         $i=0;
 
