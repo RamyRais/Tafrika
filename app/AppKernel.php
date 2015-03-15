@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Tafrika\PostBundle\TafrikaPostBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
