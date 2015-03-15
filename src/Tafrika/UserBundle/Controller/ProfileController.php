@@ -171,9 +171,10 @@ class ProfileController extends Controller
                  $entityManager->persist($user);
                  $entityManager->persist($followed);
                  $entityManager->flush();
+                 return new Response($followed->getUsername() ." is now followed");
              }
+             return new Response($followed->getUsername() ." is not followed");
          }
-         return new Response("great");
      }
 
     /**
@@ -191,12 +192,13 @@ class ProfileController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $repository = $entityManager->getRepository('TafrikaUserBundle:User');
             $followed = $repository->find($followed_id);
-            if ($user->removefollowed($followed)){
+            if ($user->removefollowed($followed)){;
                 $entityManager->persist($user);
                 $entityManager->persist($followed);
                 $entityManager->flush();
+                return new Response($followed->getUsername() ." is not followed anymore");
             }
+            return new Response($followed->getUsername() ." is still followed");
         }
-        return new Response("great");
     }
 }

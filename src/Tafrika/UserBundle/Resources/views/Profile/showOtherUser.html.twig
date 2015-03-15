@@ -7,13 +7,17 @@
             <h4>{{ user.username }}</h4>
             {% if app.user %}
                 <p><a href="#"
-                      role="button" id="friendButton"
-            {% if not(app.user.isFollowed(user)) %}
+                      role="button" id="friendButton" currentUserId ="{{ app.user.id|json_encode() }}"
+                      userId ="{{ user.id|json_encode() }}"
+                      isFollowed ="{{ app.user.isFollowed(user) ? 'true' : 'false'}}"
+                      addPath="{{ path('add_followed') }}"
+                      deletePath="{{ path('delete_followed') }}"
+                {% if not(app.user.isFollowed(user)) %}
                  class="btn btn-primary" >زيدو لشلة
-            {% else %}
-                class="btn btn-success" >سي ديجا في شلة
-            {% endif %}
-                    </a></p>
+                {% else %}
+                    class="btn btn-success" >سي ديجا في شلة
+                {% endif %}
+                </a></p>
             {% endif %}
         </div>
     </div>
@@ -58,49 +62,8 @@
     </div>
 {% endblock body %}
 {% block foot_javascripts %}
+    <script src="{{ asset('js/add_remove_followed.js') }}"></script>
     <script>
-        var currentUserId = {{ app.user.id|json_encode() }};
-        var userId = {{ user.id|json_encode() }};
-        var userFollowed = {{ user.followed|json_encode() }};
-        var isFollowed = $.inArray(currentUserId,userFollowed)!= -1 ? true : false ;
-        $("#friendButton").click(function(){
-           if(isFollowed){ // user are not friend
-               $.ajax({
-                   cache: false,
-                   type: "POST",
-                   url: "{{ path('add_followed') }}",
-                   data: { 'followed_id': userId }
-               }).done(function(msg){
-                   isFollowed = !isFollowed ;
-                   $("#friendButton").removeClass('btn-primary').addClass('btn-success');
-                   $("#friendButton").text("سي ديجا في شلة");
-               })
-           }else{
-               $.ajax({
-                   cache: false,
-                   type: "POST",
-                   url: "{{ path('delete_followed') }}",
-                   data: { 'followed_id': userId }
-               }).done(function(msg) {
-                   isFollowed = !isFollowed;
-                   $("#friendButton").removeClass('btn-success').addClass('btn-primary');
-                   $("#friendButton").text("زيدو لشلة");
-               })
-           }
-        });
-        $("#friendButton").mouseover(function(){
-            if(!isFollowed){
-                $("#friendButton").removeClass('btn-success').addClass('btn-danger');
-                $("#friendButton").text('فسخ الكازي');
-            }
-        });
-        $("#friendButton").mouseout(function(){
-            if(!isFollowed){
-                $("#friendButton").removeClass('btn-danger').addClass('btn-success');
-                $("#friendButton").text('سي ديجا في شلة');
-            }
-        })
-        /*****/
         $(function(){
 
             $(".increment").click(function(){
