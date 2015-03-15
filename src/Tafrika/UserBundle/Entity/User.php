@@ -160,12 +160,14 @@ class User extends BaseUser
      * Remove followed
      *
      * @param \Tafrika\UserBundle\Entity\User $followed
+     * @return User
      */
     public function removefollowed($followed)
     {
         if( $this->isFollowed($followed) && $followed instanceof User) {
             $this->followed->removeElement($followed);
             $followed->removefollowers($this);
+            return $this;
         }
     }
 
