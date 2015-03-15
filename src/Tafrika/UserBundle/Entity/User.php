@@ -46,9 +46,19 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->addRole("ROLE_USER");
+        $this->addRole('ROLE_USER');
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->followers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
     }
 
     /**
