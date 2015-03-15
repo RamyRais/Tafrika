@@ -163,7 +163,7 @@ class User extends BaseUser
      */
     public function removefollowed($followed)
     {
-        if( !$this->isFollowed($followed) && $followed instanceof User) {
+        if( $this->isFollowed($followed) && $followed instanceof User) {
             $this->followed->removeElement($followed);
             $followed->removefollowers($this);
         }
