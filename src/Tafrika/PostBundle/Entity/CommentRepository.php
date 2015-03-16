@@ -22,7 +22,7 @@ class CommentRepository extends EntityRepository
             ->addSelect('user')
             ->where('c.post = :post')
               ->setParameter('post', $post)
-              ->orderBy('c.createdAt','DESC');
+              ->orderBy('c.createdAt','ASC');
         $query->setFirstResult( ($page - 1)* $commentPerPage);
         $query->setMaxResults($commentPerPage);
         return $query->getQuery()->getArrayResult();
