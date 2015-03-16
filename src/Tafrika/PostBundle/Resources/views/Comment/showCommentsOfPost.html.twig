@@ -1,0 +1,25 @@
+{% for comment in comments %}
+    <li class="list-group-item">
+        {% if comment.user == app.user %}
+            <a id="delete_comment" content="{{ comment.id }}">
+                <i class="fa fa-trash pull-right"></i>
+            </a>
+        {% endif %}
+        <div class="media">
+            <div class="media-left media-middle">
+                <a
+                    {% if app.user == comment.user%}
+                        href="{{ path('fos_user_profile_show') }}"
+                    {% else %}
+                        href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"
+                    {% endif %}
+                        ><img class="media-object" src="{{ comment.user.email|getGravatarImage(40)}}" >
+                    </a>
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading comment_date">{{ comment.createdAt|createdAt }}</h6>
+                {{ comment.content }}
+            </div>
+        </div>
+    </li>
+{% endfor %}
