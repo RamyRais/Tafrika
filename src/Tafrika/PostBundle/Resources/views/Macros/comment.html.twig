@@ -1,6 +1,6 @@
 {% macro renderCommentList(comments, post) %}
     <div id="comment_list">
-        <ul id="test" class="list-group">
+        <ul id="comment_list_ul" class="list-group">
             {% for comment in comments %}
                 {{ _self.renderComment(comment) }}
             {% endfor %}
@@ -13,13 +13,14 @@
 
 {% macro renderComment(comment) %}
     <li class="list-group-item">
-        {% if comment.user == app.user %}
-            <a id="delete_comment" content="{{ comment.id }}" href="{{ path('comment_remove') }}"><i class="fa fa-trash pull-right"></i></a>
+        {% if comment.user.id == app.user.id %}
+            <a id="delete_comment" content="{{ comment.id }}" href="{{ path('comment_remove') }}">
+                <i class="fa fa-trash pull-right"></i></a>
         {% endif %}
         <div class="media">
             <div class="media-left media-middle">
                 <a
-                        {% if app.user == comment.user%}
+                        {% if app.user.id == comment.user.id %}
                             href="{{ path('fos_user_profile_show') }}"
                         {% else %}
                             href="{{ path('user_profile', {'page': 1,'user_id': comment.user.id}) }}"
