@@ -14,7 +14,7 @@ $(document).ready(function(){
             data: { 'post_id' : $post_id, 'page': $page },
             success: function(data) {
                 if(data != ""){
-                    $('#test').append(data);
+                    $('#comment_list_ul').append(data);
                 }else{
                     $('#load_comment_link').remove();
                 }

@@ -40,6 +40,10 @@ class CommentController extends Controller{
                 if ($form->isValid()) {
                     $entityManager->persist($comment);
                     $entityManager->flush();
+                    $response = new JsonResponse();
+                    $response->setData($this->renderView("TafrikaPostBundle:Comment:showComment.html.twig",array(
+                        'comment'=>$comment)));
+                    return $response;
                 } else {
                     $message = json_encode(array('message' => 'form is not valid :('));
                     return new Response($message, 419);

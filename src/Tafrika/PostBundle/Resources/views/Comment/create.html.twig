@@ -11,28 +11,6 @@
     </form>
 </div>
 
-
-{#
-<div class="row">
-    <form id="comment_form" method="POST" class="form-horizontal">
-        <div id="jquery_div">
-            <div class="col-lg-9">
-
-                <div class="well well-sm">
-                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'id':'_content' }}) }}
-                </div>
-            </div>
-
-            {{ form_widget(form._token)}}
-            <div class="form-group">
-                <div class="col-lg-3">
-                    <input id="submit_comment_form" type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
-                </div>
-            </div>
-        </div>
-    </form>
-</div>#}
-
 <script>
     $(document).ready(function(){
         $('#comment_form').on('submit',function(e){
@@ -48,7 +26,8 @@
                     data: $('#comment_form').serialize() + "&post_id="+{{ post.id }},
                     success: function(data) {
                         //alert(data.message);
-                        $('#comment_list').load(document.URL +  ' #comment_list');
+                        $('#comment_list_ul').prepend(data)
+                        //$('#comment_list').load(document.URL +  ' #comment_list');
                         $('#jquery_div').load(document.URL +  ' #jquery_div');
                     },
                     error: function(jq,status,message){
