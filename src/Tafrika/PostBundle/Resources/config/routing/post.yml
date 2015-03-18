@@ -10,6 +10,10 @@ post_delete:
     requirements:
         post_id: \d+
 
+post_load:
+    path: /load
+    defaults: { _controller: TafrikaPostBundle:Post:loadPosts }
+
 signal_nsfw:
     path: /nsfw_post
     defaults: { _controller: TafrikaPostBundle:General:signalNSFW }

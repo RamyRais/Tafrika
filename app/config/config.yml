@@ -25,7 +25,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        POST_PER_PAGE: %POST_PER_PAGE%
+        POSTS_PER_LOAD: %POSTS_PER_LOAD%
         COMMENTS_PER_LOAD: %COMMENTS_PER_LOAD%
 
 # Assetic Configuration

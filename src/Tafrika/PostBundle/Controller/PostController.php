@@ -9,6 +9,7 @@
 namespace Tafrika\PostBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Tafrika\PostBundle\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -78,6 +79,35 @@ class PostController extends Controller{
         $entityManager->remove($post);
         $entityManager->flush();
         return $this->redirect($this->generateUrl('fos_user_profile_show'));
+
+    }
+
+    public function loadPostsAction(){
+        $entityManager = $this->getDoctrine()->getManager();
+        $request = $this->get('request');
+        $nsfw = $request->getSession()->get('nsfw');
+        $page = $request->request->get('page');
+        $postPerPage = $this->container->getParameter('POSTS_PER_LOAD');
+        $posts = $entityManager->getRepository('TafrikaPostBundle:Post')->findFresh($postPerPage,
+            $page, $nsfw);
+        $user = $this->getUser();
+
+        $array=array();
+        $i=0;
+
+        foreach($posts as $x){
+            $array[$i]=$x;
+            $i++;
+
+        }
+
+        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
+        $votes = $vote->findFresh($postPerPage,$page,$user,$array);
+        $response = new JsonResponse();
+        $response->setData($this->renderView("TafrikaPostBundle:Post:showLoadedPost.html.twig",array(
+            'posts'=>$posts,
+            'votes'=>$votes)));
+        return $response;
 
     }
 }
