@@ -3,7 +3,6 @@
 namespace Tafrika\PostBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * PostRepository
@@ -24,10 +23,9 @@ class PostRepository extends EntityRepository
                 ->setParameter('nsfw', 0);
         }
         $query->orderBy('p.createdAt','DESC');
-        $query->getQuery();
         $query->setFirstResult( ($page - 1)* $postPerPage);
         $query->setMaxResults($postPerPage);
-        return new Paginator($query);
+        return $query->getQuery()->getResult();
     }
 
     public function findFollowedUserPosts($user, $postPerPage, $page, $nsfw){
@@ -42,9 +40,8 @@ class PostRepository extends EntityRepository
                 ->setParameter('nsfw', 0);
         }
         $query->orderBy('p.createdAt','DESC');
-        $query->getQuery();
         $query->setFirstResult( ($page - 1)* $postPerPage);
         $query->setMaxResults($postPerPage);
-        return new Paginator($query);
+        return $query->getQuery()->getResult();
     }
 }
