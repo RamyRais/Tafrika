@@ -12,7 +12,7 @@
 {% endmacro %}
 
 {% macro renderComment(comment) %}
-    <li class="list-group-item">
+    <li class="list-group-item" id="comment_{{ comment.id }}">
         {% if comment.user.id == app.user.id %}
             <a id="delete_comment" content="{{ comment.id }}" href="{{ path('comment_remove') }}">
                 <i class="fa fa-trash pull-right"></i></a>
