@@ -44,4 +44,21 @@ class PostRepository extends EntityRepository
         $query->setMaxResults($postPerPage);
         return $query->getQuery()->getResult();
     }
+
+    public function findUsersPosts($user, $postPerPage, $page, $nsfw){
+        if($page<1){
+            throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
+        }
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.user = :user')
+            ->setParameter('user',$user);
+        if($nsfw==1) {
+            $query->andWhere('p.NSFW = :nsfw')
+                ->setParameter('nsfw', 0);
+        }
+        $query->orderBy('p.createdAt','DESC');
+        $query->setFirstResult( ($page - 1)* $postPerPage);
+        $query->setMaxResults($postPerPage);
+        return $query->getQuery()->getResult();
+    }
 }

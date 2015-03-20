@@ -30,11 +30,12 @@
                 {% endfor %}
             </div>
             <a id="load_post_link" href="{{ path('post_load') }}"
-               postsPerLoad="{{POSTS_PER_LOAD}}" type="user" > load more posts</a>
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="user" userid="{{ user.id }}" > load more posts</a>
         </div>
     </div>
 {% endblock body %}
 {% block foot_javascripts %}
+    <script src="{{ asset('js/loadPosts.js') }}"></script>
     <script src="{{ asset('js/add_remove_followed.js') }}"></script>
     <script>
         $(function(){

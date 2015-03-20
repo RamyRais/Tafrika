@@ -39,10 +39,9 @@ class ProfileController extends Controller
         $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
-        $posts = $repository->findBy(array('user'=>$user->getId()),
-                                    array('createdAt'=>'desc'),
-                                    $postPerPage,
-                                    $page-1);
+        $nsfw = $this->get('request')->getSession()->get('nsfw');
+        $posts = $repository->findUsersPosts($user, $postPerPage, $page, $nsfw);
+
         $array=array();
         $i=0;
 
@@ -124,10 +123,8 @@ class ProfileController extends Controller
         $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
-        $posts = $repository->findBy(array('user'=>$user->getId()),
-            array('createdAt'=>'desc'),
-            $postPerPage,
-            $page);
+        $nsfw = $this->get('request')->getSession()->get('nsfw');
+        $posts = $repository->findUsersPosts($user, $postPerPage, $page, $nsfw);
 
         $array=array();
         $i=0;

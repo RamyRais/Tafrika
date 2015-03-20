@@ -97,13 +97,14 @@ class PostController extends Controller{
             case 'followed': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
                 ->findFollowedUserPosts($user,$postPerPage,$page,$nsfw);
             break;
-            case 'user': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
-                ->findBy(array('user'=>$user->getId()), array('createdAt'=>'desc'),
-                            $postPerPage, $page);
+            case 'user':
+                $userVisitedId = $request->request->get('userId');
+                $userVisited = $entityManager->getRepository('TafrikaUserBundle:User')->find($userVisitedId);
+                $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                    ->findUsersPosts($userVisited, $postPerPage, $page, $nsfw);
             break;
             case 'me': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
-                ->findBy(array('user'=>$user->getId()), array('createdAt'=>'desc'),
-                            $postPerPage, $page-1);
+                ->findUsersPosts($user, $postPerPage, $page, $nsfw);
             break;
             default: return new JsonResponse();
         }
