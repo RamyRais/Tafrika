@@ -16,38 +16,7 @@
 
             </div>
             <a id="load_post_link" href="{{ path('post_load') }}"
-               postsPerLoad="{{POSTS_PER_LOAD}}" > load more posts</a>
-            {#<nav>#}
-                {#<ul class="pagination">#}
-                    {#{% if page>1 %}#}
-                        {#<li>#}
-                            {#<a href="{{ path('tafrika_index', {'page':page-1}) }}" aria-label="Previous">#}
-                                {#<span aria-hidden="true">&laquo;</span>#}
-                            {#</a>#}
-                        {#</li>#}
-                    {#{% endif %}#}
-                    {#{% if page-2 > 0 %}#}
-                        {#<li><a href="{{ path('tafrika_index', {'page':page-2}) }}">{{ page-2 }}</a></li>#}
-                    {#{% endif %}#}
-                    {#{% if page-1 > 0 %}#}
-                        {#<li><a href="{{ path('tafrika_index', {'page':page-1}) }}">{{ page-1 }}</a></li>#}
-                    {#{% endif %}#}
-                    {#<li class="active"><a href="#">{{ page }}</a></li>#}
-                    {#{% if page+1 <= pageNumber %}#}
-                        {#<li><a href="{{ path('tafrika_index', {'page':page+1}) }}">{{ page+1 }}</a></li>#}
-                    {#{% endif %}#}
-                    {#{% if page+2 <= pageNumber %}#}
-                        {#<li><a href="{{ path('tafrika_index', {'page':page+2}) }}">{{ page+2 }}</a></li>#}
-                    {#{% endif %}#}
-                    {#{% if page < pageNumber %}#}
-                        {#<li>#}
-                            {#<a href="{{ path('tafrika_index',{'page':page+1}) }}" aria-label="Next">#}
-                                {#<span aria-hidden="true">&raquo;</span>#}
-                            {#</a>#}
-                        {#</li>#}
-                    {#{% endif %}#}
-                {#</ul>#}
-            {#</nav>#}
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="index" > load more posts</a>
         </div>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>

@@ -6,12 +6,13 @@ $(document).ready(function(){
         e.preventDefault();
         var $this = $(this);
         var $url = $this.attr('href')
+        var $type = $this.attr('type');
         var $page = Math.floor(($('.panel').length / $this.attr('postsPerLoad')) +1);
         console.log($page);
         $.ajax({
             url: $url,
             type: 'POST',
-            data: { 'page': $page },
+            data: { 'page': $page, 'type': $type },
             success: function(data) {
                 //alert(data);
                 if(data != ""){

@@ -83,14 +83,30 @@ class PostController extends Controller{
     }
 
     public function loadPostsAction(){
+        $user = $this->getUser();
         $entityManager = $this->getDoctrine()->getManager();
         $request = $this->get('request');
         $nsfw = $request->getSession()->get('nsfw');
         $page = $request->request->get('page');
         $postPerPage = $this->container->getParameter('POSTS_PER_LOAD');
-        $posts = $entityManager->getRepository('TafrikaPostBundle:Post')->findFresh($postPerPage,
-            $page, $nsfw);
-        $user = $this->getUser();
+        $type = $request->request->get('type');
+        switch($type){
+            case 'index': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                ->findFresh($postPerPage, $page, $nsfw);
+            break;
+            case 'followed': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                ->findFollowedUserPosts($user,$postPerPage,$page,$nsfw);
+            break;
+            case 'user': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                ->findBy(array('user'=>$user->getId()), array('createdAt'=>'desc'),
+                            $postPerPage, $page);
+            break;
+            case 'me': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                ->findBy(array('user'=>$user->getId()), array('createdAt'=>'desc'),
+                            $postPerPage, $page-1);
+            break;
+            default: return new JsonResponse();
+        }
 
         $array=array();
         $i=0;
@@ -109,5 +125,33 @@ class PostController extends Controller{
             'votes'=>$votes)));
         return $response;
 
+    }
+
+    public function loadFriendsPostsAction(){
+        $entityManager = $this->getDoctrine()->getManager();
+        $request = $this->get('request');
+        $nsfw = $request->getSession()->get('nsfw');
+        $page = $request->request->get('page');
+        $postPerPage = $this->container->getParameter('POSTS_PER_LOAD');
+        $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                               ->findFollowedUserPosts($postPerPage, $page, $nsfw);
+        $user = $this->getUser();
+
+        $array=array();
+        $i=0;
+
+        foreach($posts as $x){
+            $array[$i]=$x;
+            $i++;
+
+        }
+
+        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
+        $votes = $vote->findFresh($postPerPage,$page,$user,$array);
+        $response = new JsonResponse();
+        $response->setData($this->renderView("TafrikaPostBundle:Post:showLoadedPost.html.twig",array(
+            'posts'=>$posts,
+            'votes'=>$votes)));
+        return $response;
     }
 }
