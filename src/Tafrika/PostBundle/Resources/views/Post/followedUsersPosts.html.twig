@@ -1,0 +1,119 @@
+{% extends "::layout.html.twig" %}
+{% import "TafrikaPostBundle:Macros:post.html.twig" as postRender %}
+{% block body_javascripts %}
+    <div id="fb-root"></div>
+    <script src="{{ asset('js/FB_patage.js') }}"></script>
+{% endblock %}
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div id="posts">
+                {% for post in posts %}
+                    {{ postRender.postShow(post,false) }}
+                {% endfor %}
+
+            </div>
+            <a id="load_post_link" href="{{ path('post_load') }}"
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="friends" > load more posts</a>
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="{{ asset('js/signal.js') }}"></script>
+    <script src="{{ asset('js/loadPosts.js') }}"></script>
+    <script>
+
+        $(function(){
+
+            $(".increment").click(function(){
+
+
+                if($(this).hasClass("up")) {
+                    if ($(this).hasClass("video")) {
+                        var id = $.parseJSON($(this).attr('id').substr(9));
+                        var url = Routing.generate('vote_up_video', {'video_id': id});
+                    }else if ($(this).hasClass("image")) {
+                        var id = $.parseJSON($(this).attr('id').substr(9));
+                        var url = Routing.generate('vote_up_image', {'image_id': id});
+                    }else if ($(this).hasClass("status")) {
+                        var id = $.parseJSON($(this).attr('id').substr(9));
+                        var url = Routing.generate('vote_up_status', {'status_id': id});
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#thumbs_up").serialize(),
+                        success: function (data) {
+                            up="up_button";
+                            down="down_button";
+                            count=" #count";
+                            if (data.button == "up_button") {
+                                document.getElementById(up.concat(id)).style.background = '#337ab7';
+                                document.getElementById(down.concat(id)).style.background = '#ffffff';
+                            } else {
+                                document.getElementById(up.concat(id)).style.background = '#ffffff';
+                                document.getElementById(down.concat(id)).style.background = '#ffffff';
+                            }
+                            $(count.concat(id)).load(document.URL + count.concat(id));
+
+                        }
+                    });
+
+
+                } else {
+                    if ($(this).hasClass("video")) {
+                        var id = $.parseJSON($(this).attr('id').substr(11));
+                        var url = Routing.generate('vote_down_video', {'video_id': id});
+                    }else if ($(this).hasClass("image")) {
+                        var id = $.parseJSON($(this).attr('id').substr(11));
+                        var url = Routing.generate('vote_down_image', {'image_id': id});
+                    }else if ($(this).hasClass("status")) {
+                        var id = $.parseJSON($(this).attr('id').substr(11));
+                        var url = Routing.generate('vote_down_status', {'status_id': id});
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#thumbs_up").serialize(),
+                        success: function (data) {
+                            up = "up_button";
+                            down = "down_button";
+                            count=" #count";
+                            if (data.button == "down_button") {
+                                document.getElementById(down.concat(id)).style.background = '#337ab7';
+                                document.getElementById(up.concat(id)).style.background = '#ffffff';
+                            } else {
+                                document.getElementById(up.concat(id)).style.background = '#ffffff';
+                                document.getElementById(down.concat(id)).style.background = '#ffffff';
+                            }
+                            $(count.concat(id)).load(document.URL + count.concat(id));
+
+                        }
+                    });
+
+
+                }
+
+                $(this).parent().addClass("bump");
+
+                setTimeout(function(){
+                    $(this).parent().removeClass("bump");
+                }, 400);
+            });
+        });
+
+
+        window.onload = function() {
+            {% for vote in votes %}
+            if(({{ vote.vote }})==1) {
+                document.getElementById("{{ 'up_button' ~ vote.post.id }}").style.background = '#337ab7';
+            }
+            else {
+                document.getElementById("{{ 'down_button' ~ vote.post.id }}").style.background = '#337ab7';
+            }
+            {% endfor %}
+
+        }
+    </script>
+{% endblock %}

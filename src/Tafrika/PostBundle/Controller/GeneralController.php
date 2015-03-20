@@ -73,7 +73,6 @@ class GeneralController extends  Controller{
         $rep = $em->getRepository('TafrikaPostBundle:Post');
         $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $posts = $rep->findFollowedUserPosts($user,$postPerPage,$page,$nsfw);
-
         $array=array();
         $i=0;
         foreach($posts as $x){
@@ -90,7 +89,7 @@ class GeneralController extends  Controller{
         $response->headers->set('X-Frame-Options','Allow-From http://www.youtube.com');
         $response->headers->set('X-Frame-Options','GOFORIT');
         $engine = $this->container->get('templating');
-        $content = $engine->render('TafrikaPostBundle::index.html.twig',array(
+        $content = $engine->render('TafrikaPostBundle:Post:followedUsersPosts.html.twig',array(
             'posts'=>$posts,
             'votes'=>$votes,
             'page' => $page,
