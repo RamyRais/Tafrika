@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class PostController extends Controller{
 
     /**
-     * @ParamConverter("post", options={"mapping": {"post_id": "id"}})
+     * @ParamConverter("post", options={"mapping": {"post_slug": "slug"}})
      */
     public function showPostAction(Post $post){
         $user = $this->get('security.context')->getToken()->getUser();
