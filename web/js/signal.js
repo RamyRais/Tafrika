@@ -3,7 +3,7 @@
  */
 
 $(document).ready(function(){
-    $('#signal_nsfw').on('click',function(e){
+    $('body').on('click', '#signal_nsfw',function(e){
         e.preventDefault();
         var $this = $(this);
         var $path = $this.attr('href');
@@ -24,7 +24,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#signal_porn').on('click',function(e){
+    $('body').on('click','#signal_porn',function(e){
         e.preventDefault();
         var $this = $(this);
         var $path = $this.attr('href');
