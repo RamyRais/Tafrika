@@ -61,4 +61,36 @@ class PostRepository extends EntityRepository
         $query->setMaxResults($postPerPage);
         return $query->getQuery()->getResult();
     }
+
+    public function countUserPosts($user, $nsfw){
+        $query = $this->createQueryBuilder('p');
+        $query->andWhere('p.user = :user')
+            ->setParameter('user',$user);
+        $query = $this->countPosts($query, $nsfw);
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
+    public function countFollowedUserPosts($user, $nsfw){
+        $query = $this->createQueryBuilder('p');
+        $query = $this->countPosts($query, $nsfw);
+        $query->andWhere($query->expr()->in('p.user',':followed'))
+            ->setParameter('followed',$user->getFollowed()->toArray());
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
+    public function countFreshPosts($nsfw){
+        $query = $this->createQueryBuilder('p');
+        $query = $this->countPosts($query, $nsfw);
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
+    public function countPosts($query, $nsfw){
+        $query->select('COUNT(p)');
+        if($nsfw==1) {
+            $query->where('p.NSFW = :nsfw')
+                ->setParameter('nsfw', 0);
+        }
+        return $query;
+    }
 }

@@ -42,6 +42,7 @@ class GeneralController extends  Controller{
         $votes=$vote->findFresh($postPerPage,$page,$user,$array);
         //die($votes->getIterator()->current()->getTitle());
 
+        $totalPage = $rep->countFreshPosts($nsfw);
         $response = new Response();
         $response->headers->set('X-Frame-Options','Allow-From http://www.youtube.com');
         $response->headers->set('X-Frame-Options','GOFORIT');
@@ -50,7 +51,7 @@ class GeneralController extends  Controller{
             'posts'=>$posts,
             'votes'=>$votes,
             'page' => $page,
-            'pageNumber'=>ceil(count($posts)/$postPerPage)));
+            'totalPage'=>ceil($totalPage/$postPerPage)));
         $response->setContent($content);
         return $response;
     }
@@ -84,7 +85,7 @@ class GeneralController extends  Controller{
         $vote = $em->getRepository('TafrikaPostBundle:Vote');
         $votes=$vote->findFresh($postPerPage,$page,$user,$array);
         //die($votes->getIterator()->current()->getTitle());
-
+        $totalPage = $rep->countFollowedUserPosts($user, $nsfw);
         $response = new Response();
         $response->headers->set('X-Frame-Options','Allow-From http://www.youtube.com');
         $response->headers->set('X-Frame-Options','GOFORIT');
@@ -93,7 +94,7 @@ class GeneralController extends  Controller{
             'posts'=>$posts,
             'votes'=>$votes,
             'page' => $page,
-            'pageNumber'=>ceil(count($posts)/$postPerPage)));
+            'totalPage'=>ceil($totalPage/$postPerPage)));
         $response->setContent($content);
         return $response;
     }

@@ -23,7 +23,8 @@
                 {% endfor %}
             </div>
             <a id="load_post_link" href="{{ path('post_load') }}"
-               postsPerLoad="{{POSTS_PER_LOAD}}" type="me"> load more posts</a>
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="me" totalPage="{{ totalPage }}"
+               style="visibility: hidden;"> load more posts</a>
         </div>
     </div>
     <script src="{{ asset('js/loadPosts.js') }}"></script>

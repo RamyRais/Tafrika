@@ -30,7 +30,8 @@
                 {% endfor %}
             </div>
             <a id="load_post_link" href="{{ path('post_load') }}"
-               postsPerLoad="{{POSTS_PER_LOAD}}" type="user" userid="{{ user.id }}" > load more posts</a>
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="user" userid="{{ user.id }}" totalPage="{{ totalPage }}"
+               style="visibility: hidden;" > load more posts</a>
         </div>
     </div>
 {% endblock body %}

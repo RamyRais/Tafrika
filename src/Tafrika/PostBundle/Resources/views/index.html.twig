@@ -16,10 +16,11 @@
 
             </div>
             <a id="load_post_link" href="{{ path('post_load') }}"
-               postsPerLoad="{{POSTS_PER_LOAD}}" type="index" > load more posts</a>
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="index" totalPage="{{ totalPage }}"
+               style="visibility: hidden;" > load more posts</a>
         </div>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
     <script src="{{ asset('js/signal.js') }}"></script>
     <script src="{{ asset('js/loadPosts.js') }}"></script>
     <script>

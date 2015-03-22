@@ -41,7 +41,7 @@ class ProfileController extends Controller
         $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
         $nsfw = $this->get('request')->getSession()->get('nsfw');
         $posts = $repository->findUsersPosts($user, $postPerPage, $page, $nsfw);
-
+        $totalPost = $repository->countUserPosts($user, $nsfw);
         $array=array();
         $i=0;
 
@@ -60,7 +60,7 @@ class ProfileController extends Controller
             'posts' => $posts,
             'page' => $page,
             'votes' => $votes,
-            'pageNumber'=>ceil(count($posts)/$postPerPage)
+            'totalPage'=>ceil($totalPost/$postPerPage)
         ));
     }
 
@@ -125,7 +125,7 @@ class ProfileController extends Controller
         $repository = $entityManager->getRepository('TafrikaPostBundle:Post');
         $nsfw = $this->get('request')->getSession()->get('nsfw');
         $posts = $repository->findUsersPosts($user, $postPerPage, $page, $nsfw);
-
+        $totalPost = $repository->countUserPosts($user, $nsfw);
         $array=array();
         $i=0;
 
@@ -145,7 +145,7 @@ class ProfileController extends Controller
             'posts' => $posts,
             'page' => $page,
             'votes' =>$votes,
-            'pageNumber'=>ceil(count($posts)/$postPerPage)
+            'totalPage'=>ceil($totalPost/$postPerPage)
         ));
     }
 
