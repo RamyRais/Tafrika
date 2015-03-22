@@ -72,6 +72,7 @@ class Post
      * @@var integer
      *
      * @ORM\Column(name="signal_nsfw", type="integer")
+     * @Assert\EqualTo( value = 0)
      */
     private $signal_nsfw;
 
@@ -79,6 +80,7 @@ class Post
      * @@var integer
      *
      * @ORM\Column(name="signal_porn", type="integer")
+     * @Assert\EqualTo( value = 0)
      */
     private $signal_porn;
 

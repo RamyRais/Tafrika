@@ -28,12 +28,9 @@ class Status extends Post
      *
      * @ORM\Column(name="content", type="text")
      * @Assert\Length(min=10,
-     *              minMessage="يا معلم تيتر لازمو فوق 10 حروف")
+     *              minMessage="عبر راهو مش إكتب كلمة ولا زوز")
      */
     private $content;
-
-
-
 
     /**
      * Set content
