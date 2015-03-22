@@ -4,7 +4,9 @@ namespace Tafrika\PostBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile as UploadedFile;
+use Imagine\Gd\Imagine as Imagine;
+use Imagine\Image\Box as Box;
 
 /**
  * Image
@@ -34,7 +36,10 @@ class Image extends Post
     private $path;
 
     /**
-     * @Assert\File()
+     * @var UploadedFile
+     * @Assert\Image(
+     *          maxSize = "2M",
+     *          maxSizeMessage="تصوير كبيرة برشا لحد لأقصى 2 ميجا")
      */
     private $file;
 
@@ -66,9 +71,21 @@ class Image extends Post
         // vous devez lancer une exception ici si le fichier ne peut pas
         // être déplacé afin que l'entité ne soit pas persistée dans la
         // base de données comme le fait la méthode move() de UploadedFile
+        $file_path = $this->getUploadRootDir().'/'.$this->getId()."_".$this->getPath();
         $this->file->move($this->getUploadRootDir().'/', $this->getId()."_".$this->getPath());
-
-        //unset($this->file);
+        $imagine = new Imagine();
+        $image = $imagine->open($file_path);
+        $imageWidth = $image->getSize()->getWidth();
+        if($imageWidth <= 580) {
+            $imageHeight = $image->getSize()->getHeight();
+            $ratio = $imageHeight / $imageWidth;
+            $imageWidth = 580;
+            $imageHeight = $imageWidth * $ratio;
+            $image->resize(new Box($imageWidth, $imageHeight));
+            unlink($file_path);
+            $image->save($file_path);
+        }
+        unset($this->file);
     }
 
     /**
