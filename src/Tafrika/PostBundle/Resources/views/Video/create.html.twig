@@ -1,7 +1,7 @@
 {% extends '::layout.html.twig' %}
 
 {% block body %}
-
+<form action="{{ path('video_add') }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
     <div class="row">
         <div class="col-md-3">
             {% if form_errors(form.title) %}
@@ -9,6 +9,18 @@
                     {{ form_errors(form.title, {'attr': {'class': 'alert alert-danger', 'role':'alert' }} ) }}
                 </div>
             {% endif %}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-sm-10">
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'id':'title' }}) }}
+                </div>
+                <label for="title" class="col-sm-2 control-label">حط تيتر</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             {% if form_errors(form.url) %}
                 <div class="alert alert-danger" role="alert">
                     {{ form_errors(form.url, {'attr': {'class': 'alert alert-danger', 'role':'alert' }} ) }}
@@ -16,44 +28,45 @@
             {% endif %}
         </div>
         <div class="col-md-6">
-            <form action="{{ path('video_add') }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
-                <div class="form-group">
-
-                    <div class="col-sm-10">
-                        {{ form_widget(form.title, {'attr': {'class': 'form-control', 'id':'title' }}) }}
-                    </div>
-                    <label for="title" class="col-sm-2 control-label">حط تيتر</label>
+            <div class="form-group">
+                <div class="col-sm-10">
+                    {{  form_widget(form.url, {'attr': {'class': 'form-control', 'id':'content' }}) }}
                 </div>
-                <div class="form-group">
-
-                    <div class="col-sm-10">
-                        {{  form_widget(form.url, {'attr': {'class': 'form-control', 'id':'content' }}) }}
-                    </div>
-                    <label for="content" class="col-sm-2 control-label">حط ليان يوتيوب</label>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-sm-11"></div>
-                            <div class="col-sm-1">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ form_widget(form.NSFW, {'attr': {'id':'NSFW'}}) }}
-                                    </label>
-                                </div>
+                <label for="content" class="col-sm-2 control-label">حط ليان يوتيوب</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-11"></div>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    {{ form_widget(form.NSFW, {'attr': {'id':'NSFW'}}) }}
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <label for="NSFW" class="col-sm-2 control-label">-18</label>
                 </div>
-                {{ form_widget(form._token)}}
-                <div class="form-group">
-                    <div class="col-sm-offset-0 col-sm-10">
-                        <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
-                    </div>
-                </div>
-            </form>
+                <label for="NSFW" class="col-sm-2 control-label">-18</label>
+            </div>
         </div>
-        {{ form_errors(form) }}
     </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-sm-offset-0 col-sm-10">
+                    <input type="submit" value="submit" class="btn btn-primary btn-lg btn-block" />
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_widget(form._token) }}
+    {{ form_errors(form) }}
+</form>
 {% endblock %}
