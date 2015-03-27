@@ -13,7 +13,7 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
 
-        {{ postRender.postShow(status,true) }}
+        {{ postRender.postShow(status, true, matchingVotes) }}
 
         {% if app.user %}
             {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': status.id } )) }}
@@ -24,85 +24,5 @@
     </div>
     </div>
     <script src="{{ asset('js/signal.js') }}"></script>
-    <script>
-
-
-        $(function(){
-
-            $(".increment").click(function(){
-
-
-                if($(this).hasClass("up")) {
-
-                    var url = "{{ path('vote_up_status', {'status_id': status.id}) }}";
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: $("#thumbs_up").serialize(),
-                        success: function(data){
-                            if(data.button=="up_button") {
-
-                                document.getElementById("up_button").style.background = '#337ab7';
-                                document.getElementById("down_button").style.background = '#ffffff';
-                            }else
-                            {
-                                document.getElementById("up_button").style.background = '#ffffff';
-                                document.getElementById("down_button").style.background = '#ffffff';
-                            }
-                            $('#count').load(document.URL +  ' #count');
-
-                        }
-                    });
-
-                } else {
-
-
-                    var url = "{{ path('vote_down_status', {'status_id': status.id}) }}";
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: $("#thumbs_up").serialize(),
-                        success: function(data){
-
-                            if(data.button=="down_button") {
-                                document.getElementById("down_button").style.background = '#337ab7';
-                                document.getElementById("up_button").style.background = '#ffffff';
-                            }else
-                            {
-                                document.getElementById("up_button").style.background = '#ffffff';
-                                document.getElementById("down_button").style.background = '#ffffff';
-                            }
-                            $('#count').load(document.URL +  ' #count');
-
-                        }
-                    });
-
-                }
-
-                $(this).parent().addClass("bump");
-
-                setTimeout(function(){
-                    $(this).parent().removeClass("bump");
-                }, 400);
-            });
-        });
-
-        window.onload = function() {
-
-            if("{{ user_vote }}"=="vote_up") {
-                document.getElementById("up_button").style.background = '#337ab7';
-                document.getElementById("down_button").style.background = '#ffffff';
-            }else if("{{ user_vote }}"=="no_vote")
-            {
-                document.getElementById("up_button").style.background = '#ffffff';
-                document.getElementById("down_button").style.background = '#ffffff';
-            }
-            else if("{{ user_vote }}"=="vote_down")
-            {
-                document.getElementById("up_button").style.background = '#ffffff';
-                document.getElementById("down_button").style.background = '#337ab7';
-            }
-
-        }
-    </script>
+    <script src="{{ asset('js/vote.js') }}"></script>
 {% endblock %}

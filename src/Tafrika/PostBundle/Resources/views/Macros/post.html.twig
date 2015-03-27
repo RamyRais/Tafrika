@@ -1,11 +1,11 @@
 {#
     onPostPage: boolean, are we in the page that shows the post
 #}
-{% macro postShow(post, onPostPage) %}
+{% macro postShow(post, onPostPage, votes) %}
     <div class="panel panel-default">
         {{ _self.postHead(post, onPostPage) }}
         {{ _self.postBody(post, onPostPage) }}
-        {{ _self.postFooter(post) }}
+        {{ _self.postFooter(post, votes) }}
     </div>
 {% endmacro %}
 
@@ -63,24 +63,55 @@
     </div>
 {% endmacro %}
 
-{% macro postFooter(post) %}
+{% macro postFooter(post, votes) %}
     <div class="panel-footer">
         <div class="row">
-            <div class="col-md-2"> <div id="count">{{ post.likes }} likes</div></div>
-            <div id="thumbs_up" class="col-md-1">
-                <button  type="button" id="up_button" class="btn btn-default increment up">
-                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+            <div class="pull-left">
+                <span id="count{{ post.id }}">{{ post.likes }} likes</span>
+            <div class="btn-group" role="group" aria-label="likes-buttons">
+                {% if post.id in votes|keys %}
+                    {% if attribute(votes, post.id) == 1  %}
+                        <button id="button_up" postId="{{ post.id }}" path="{{ path('vote_up') }}"
+                                type="button" class="btn btn-default change_state_up_{{ post.id }}">
+                            <i class="fa fa-thumbs-up"></i>
+                        </button>
+                        <button id="button_down" postId="{{ post.id }}" path="{{ path('vote_down') }}"
+                                type="button" class="btn btn-default change_state_down_{{ post.id }}">
+                            <i class="fa fa-thumbs-o-down"></i>
+                        </button>
+                    {% elseif  attribute(votes, post.id)== -1  %}
+                        <button id="button_up" postId="{{ post.id }}" path="{{ path('vote_up') }}"
+                                type="button" class="btn btn-default change_state_up_{{ post.id }}">
+                            <i class="fa fa-thumbs-o-up"></i>
+                        </button>
+                        <button id="button_down" postId="{{ post.id }}" path="{{ path('vote_down') }}"
+                                type="button" class="btn btn-default change_state_down_{{ post.id }}">
+                            <i class="fa fa-thumbs-down"></i>
+                        </button>
+                    {% endif %}
+                {% else %}
+                    <button id="button_up" postId="{{ post.id }}" path="{{ path('vote_up') }}"
+                            type="button" class="btn btn-default change_state_up_{{ post.id }}">
+                        <i class="fa fa-thumbs-o-up"></i>
+                    </button>
+                    <button id="button_down" postId="{{ post.id }}" path="{{ path('vote_down') }}"
+                        type="button" class="btn btn-default change_state_down_{{ post.id }}">
+                        <i class="fa fa-thumbs-o-down"></i>
+                    </button>
+                {% endif %}
+            </div>
+            </div>
+
+            <div class="pull-right" >
+                <button class="btn btn-social-icon btn-facebook">
+                    <i class="fa fa-facebook"></i>
+                </button>
+                <button  class="btn btn-social-icon btn-google-plus">
+                    <i class="fa fa-google-plus"></i>
                 </button>
             </div>
-            <div class="col-md-1">
-                <button type="button" id="down_button" class="btn btn-default increment down">
-                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                </button>
-            </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-2">
-                <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
-            </div>
+
+
         </div>
     </div>
 {% endmacro %}

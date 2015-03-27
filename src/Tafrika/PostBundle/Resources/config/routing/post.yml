@@ -21,3 +21,13 @@ signal_porn:
     path: /porn_post
     defaults: { _controller: TafrikaPostBundle:General:signalPorn }
     methods: [POST]
+
+vote_up:
+   path: /vote_up
+   defaults: { _controller: TafrikaPostBundle:Post:VoteUp }
+   methods: [POST]
+
+vote_down:
+   path: /vote_down
+   defaults: { _controller: TafrikaPostBundle:Post:VoteDown }
+   methods: [POST]

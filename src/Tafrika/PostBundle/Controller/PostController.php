@@ -10,8 +10,10 @@ namespace Tafrika\PostBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tafrika\PostBundle\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Tafrika\PostBundle\Entity\Vote;
 
 class PostController extends Controller{
 
@@ -19,40 +21,31 @@ class PostController extends Controller{
      * @ParamConverter("post", options={"mapping": {"post_slug": "slug"}})
      */
     public function showPostAction(Post $post){
-        $user = $this->get('security.context')->getToken()->getUser();
-        $vote = $this->getDoctrine()->getRepository('TafrikaPostBundle:Vote')->findOneBy(
+        $user = $this->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
+        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote')->findOneBy(
             array('post' => $post,
                 'user' => $user)
         );
-        $em = $this->getDoctrine()->getManager();
 
-        if (!$vote) {
-
-            $user_vote="no_vote";
-
-        } else if($vote->getVote()==1){
-
-            $user_vote="vote_up";
-
-        }else{
-
-            $user_vote="vote_down";
-
+        $matchingVotes = array();
+        if($vote != null) {
+            $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
         }
         $commentPerLoad = $this->container->getParameter('COMMENTS_PER_LOAD');
-        $comments=$this->getDoctrine()->getRepository('TafrikaPostBundle:Comment')
+        $comments=$entityManager->getRepository('TafrikaPostBundle:Comment')
                        ->findCommentByPost(1,$commentPerLoad,$post);
         if($post->get_type()=="IMAGE") {
             return $this->render('TafrikaPostBundle:Image:show.html.twig', array(
-                'image' => $post, 'comments' => $comments, 'user_vote' => $user_vote
+                'image' => $post, 'comments' => $comments, 'matchingVotes'=>$matchingVotes
             ));
         }else if($post->get_type()=="STATUS"){
             return $this->render('TafrikaPostBundle:Status:show.html.twig',array(
-                'status'=>$post,'comments'=>$comments,'user_vote'=>$user_vote
+                'status'=>$post,'comments'=>$comments,'matchingVotes'=>$matchingVotes
             ));
         }else if($post->get_type()=="VIDEO"){
             return $this->render('TafrikaPostBundle:Video:show.html.twig',array(
-                'video'=>$post,'comments'=>$comments,'user_vote'=>$user_vote
+                'video'=>$post,'comments'=>$comments,'matchingVotes'=>$matchingVotes
             ));
         }
 
@@ -109,21 +102,21 @@ class PostController extends Controller{
             default: return new JsonResponse();
         }
 
-        $array=array();
-        $i=0;
 
-        foreach($posts as $x){
-            $array[$i]=$x;
-            $i++;
-
+        $votes = null;
+        $matchingVotes = array();
+        if($user != null) {
+            $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                ->findVoteByUserAndPosts($user, $posts);
+            foreach($votes as $vote){
+                $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
+            }
         }
 
-        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
-        $votes = $vote->findFresh($postPerPage,$page,$user,$array);
         $response = new JsonResponse();
         $response->setData($this->renderView("TafrikaPostBundle:Post:showLoadedPost.html.twig",array(
             'posts'=>$posts,
-            'votes'=>$votes)));
+            'matchingVotes'=>$matchingVotes)));
         return $response;
 
     }
@@ -154,5 +147,81 @@ class PostController extends Controller{
             'posts'=>$posts,
             'votes'=>$votes)));
         return $response;
+    }
+
+    public function voteUpAction(){
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            return new Response("you must sing in to vote up");
+        }
+        $request = $this->get('request');
+        if($request->isXmlHttpRequest()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $postId = $request->request->get('post_id');
+            $post = $entityManager->getRepository('TafrikaPostBundle:Post')->find($postId);
+            $vote = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                                ->findOneBy(array('post' => $post, 'user' => $user));
+            if($vote == null){ //vote doesn't exist in the database
+                $newVote = new Vote(); //so we create one
+                $newVote->setPost($post);
+                $newVote->setUser($user);
+                $newVote->setVote(1);
+                $entityManager->persist($newVote); // and persist it
+                $post->setLikes($post->getLikes() + 1); //update the like since we don't calculate it
+            }else {
+                $voteValue = $vote->getVote();
+                switch ($voteValue) {
+                    case 1 :
+                        $post->setLikes($post->getLikes() - 1);
+                        $entityManager->remove($vote);
+                    break;
+                    case -1 :
+                        $post->setLikes($post->getLikes() + 2);
+                        $vote->setVote(1);
+                        break;
+                }
+            }
+            $entityManager->flush();
+            return new Response($post->getLikes());
+        }
+        return new Response("request is not ajax");
+    }
+
+    public function voteDownAction(){
+        if(!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            return new Response("you must sing in to vote up");
+        }
+        $request = $this->get('request');
+        if($request->isXmlHttpRequest()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $postId = $request->request->get('post_id');
+            $post = $entityManager->getRepository('TafrikaPostBundle:Post')->find($postId);
+            $vote = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                ->findOneBy(array('post' => $post, 'user' => $user));
+            if($vote == null){ //vote doesn't exist in the database
+                $newVote = new Vote(); //so we create one
+                $newVote->setPost($post);
+                $newVote->setUser($user);
+                $newVote->setVote(-1);
+                $entityManager->persist($newVote); // and persist it
+                $post->setLikes($post->getLikes() - 1); //update the like since we don't calculate it
+            }else {
+                $voteValue = $vote->getVote();
+                switch ($voteValue) {
+                    case -1 :
+                        $post->setLikes($post->getLikes() + 1);
+                        $entityManager->remove($vote);
+                        break;
+                    case 1 :
+                        $post->setLikes($post->getLikes() - 2);
+                        $vote->setVote(-1);
+                        break;
+                }
+            }
+            $entityManager->flush();
+            return new Response($post->getLikes());
+        }
+        return new Response("request is not ajax");
     }
 }

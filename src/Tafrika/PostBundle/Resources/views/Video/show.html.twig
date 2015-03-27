@@ -11,7 +11,7 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
 
-        {{ postRender.postShow(video,true) }}
+        {{ postRender.postShow(video,true, matchingVotes) }}
         {% if app.user %}
             {{ render(controller('TafrikaPostBundle:Comment:renderAddComment', {'post_id': video.id } )) }}
         {% endif %}
@@ -20,98 +20,5 @@
     </div>
     </div>
     <script src="{{ asset('js/signal.js') }}"></script>
-    <script>
-        $("#comment_form").submit(function() {
-
-            var url = "{{ path('video_show', {'video_id': video.id}) }}";
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: $("#comment_form").serialize(),
-                success: function(data) {
-                    $('#comment_list').load(document.URL +  ' #comment_list');
-                    $('#jquery_div').load(document.URL +  ' #jquery_div');
-                }
-            });
-
-            return false;
-        });
-
-        $(function(){
-
-            $(".increment").click(function(){
-
-
-                if($(this).hasClass("up")) {
-
-                    var url = "{{ path('vote_up_video', {'video_id': video.id}) }}";
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: $("#thumbs_up").serialize(),
-                        success: function(data){
-                            if(data.button=="up_button") {
-                                document.getElementById("up_button").style.background = '#337ab7';
-                                document.getElementById("down_button").style.background = '#ffffff';
-                            }else
-                            {
-                                document.getElementById("up_button").style.background = '#ffffff';
-                                document.getElementById("down_button").style.background = '#ffffff';
-                            }
-                            $('#count').load(document.URL +  ' #count');
-
-                        }
-                    });
-
-                } else {
-
-
-                    var url = "{{ path('vote_down_video', {'video_id': video.id}) }}";
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: $("#thumbs_up").serialize(),
-                        success: function(data){
-
-                            if(data.button=="down_button") {
-                                document.getElementById("down_button").style.background = '#337ab7';
-                                document.getElementById("up_button").style.background = '#ffffff';
-                            }else
-                            {
-                                document.getElementById("up_button").style.background = '#ffffff';
-                                document.getElementById("down_button").style.background = '#ffffff';
-                            }
-                            $('#count').load(document.URL +  ' #count');
-
-                        }
-                    });
-
-                }
-
-                $(this).parent().addClass("bump");
-
-                setTimeout(function(){
-                    $(this).parent().removeClass("bump");
-                }, 400);
-            });
-        });
-
-        window.onload = function() {
-
-            if("{{ user_vote }}"=="vote_up") {
-                document.getElementById("up_button").style.background = '#337ab7';
-                document.getElementById("down_button").style.background = '#ffffff';
-            }else if("{{ user_vote }}"=="no_vote")
-            {
-                document.getElementById("up_button").style.background = '#ffffff';
-                document.getElementById("down_button").style.background = '#ffffff';
-            }
-            else if("{{ user_vote }}"=="vote_down")
-            {
-                document.getElementById("up_button").style.background = '#ffffff';
-                document.getElementById("down_button").style.background = '#337ab7';
-            }
-
-        }
-    </script>
+    <script src="{{ asset('js/vote.js') }}"></script>
 {% endblock %}

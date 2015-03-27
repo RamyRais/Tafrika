@@ -13,6 +13,20 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class VoteRepository extends EntityRepository
 {
+    /**
+     * @param Tafrika\UserBundle\Entity\User
+     * @param Tafrika\PostBundle\Entity\post
+     * @return array
+     */
+    public function findVoteByUserAndPosts($user, $posts){
+        $query = $this->createQueryBuilder('v');
+        $query->where('v.user = :user')
+            ->setParameter('user',$user)
+            ->andWhere($query->expr()->in('v.post',':posts'))
+            ->setParameter('posts',$posts);
+        return $query->getQuery()->getResult();
+    }
+
     public function findFresh($postPerPage, $page,$user,$posts){
         if($page<1){
             throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");

@@ -42,24 +42,22 @@ class ProfileController extends Controller
         $nsfw = $this->get('request')->getSession()->get('nsfw');
         $posts = $repository->findUsersPosts($user, $postPerPage, $page, $nsfw);
         $totalPost = $repository->countUserPosts($user, $nsfw);
-        $array=array();
-        $i=0;
 
-        foreach($posts as $x){
-            $array[$i]=$x;
-            $i++;
-
+        $votes = null;
+        $matchingVotes = array();
+        if($user != null) {
+            $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                ->findVoteByUserAndPosts($user, $posts);
+            foreach($votes as $vote){
+                $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
+            }
         }
-
-        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
-        $votes=$vote->findFresh($postPerPage,$page,$user,$array);
-
 
         return $this->render('FOSUserBundle:Profile:show.html.twig', array(
             'user' => $user,
             'posts' => $posts,
             'page' => $page,
-            'votes' => $votes,
+            'matchingVotes'=>$matchingVotes,
             'totalPage'=>ceil($totalPost/$postPerPage)
         ));
     }
@@ -126,25 +124,24 @@ class ProfileController extends Controller
         $nsfw = $this->get('request')->getSession()->get('nsfw');
         $posts = $repository->findUsersPosts($user, $postPerPage, $page, $nsfw);
         $totalPost = $repository->countUserPosts($user, $nsfw);
-        $array=array();
-        $i=0;
 
-        foreach($posts as $x){
-            $array[$i]=$x;
-            $i++;
-
+        $currentUser = $this->getUser();
+        $votes = null;
+        $matchingVotes = array();
+        if($currentUser != null) {
+            $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                ->findVoteByUserAndPosts($currentUser, $posts);
+            foreach($votes as $vote){
+                $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
+            }
         }
 
-        $current_user = $this->get('security.context')->getToken()->getUser();
-
-        $vote = $entityManager->getRepository('TafrikaPostBundle:Vote');
-        $votes=$vote->findFresh($postPerPage,$page,$current_user,$array);
 
         return $this->render('TafrikaUserBundle:Profile:showOtherUser.html.twig', array(
             'user' => $user,
             'posts' => $posts,
             'page' => $page,
-            'votes' =>$votes,
+            'matchingVotes'=>$matchingVotes,
             'totalPage'=>ceil($totalPost/$postPerPage)
         ));
     }

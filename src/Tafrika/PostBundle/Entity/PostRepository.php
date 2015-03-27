@@ -64,9 +64,9 @@ class PostRepository extends EntityRepository
 
     public function countUserPosts($user, $nsfw){
         $query = $this->createQueryBuilder('p');
+        $query = $this->countPosts($query, $nsfw);
         $query->andWhere('p.user = :user')
             ->setParameter('user',$user);
-        $query = $this->countPosts($query, $nsfw);
         return $query->getQuery()->getSingleScalarResult();
     }
 

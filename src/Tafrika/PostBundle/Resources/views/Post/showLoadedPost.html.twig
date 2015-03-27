@@ -1,4 +1,4 @@
 {% import "TafrikaPostBundle:Macros:post.html.twig" as postRender %}
 {%  for post in posts %}
-    {{ postRender.postShow(post, false) }}
+    {{ postRender.postShow(post, false, matchingVotes) }}
 {% endfor %}

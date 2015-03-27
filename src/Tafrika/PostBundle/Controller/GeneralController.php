@@ -22,38 +22,29 @@ class GeneralController extends  Controller{
         }else{
             $nsfw = $session->get('nsfw');
         }
-        $em = $this->getDoctrine()->getManager();
-        $rep = $em->getRepository('TafrikaPostBundle:Post');
+        $entityManager = $this->getDoctrine()->getManager();
+        $postRepository = $entityManager->getRepository('TafrikaPostBundle:Post');
         $postPerPage = $this->container->getParameter('POST_PER_PAGE');
-        $posts = $rep->findFresh($postPerPage,$page,$nsfw);
-        $user = $this->get('security.context')->getToken()->getUser();
+        $posts = $postRepository->findFresh($postPerPage,$page,$nsfw);
 
-
-        $array=array();
-        $i=0;
-
-        foreach($posts as $x){
-            $array[$i]=$x;
-            $i++;
-
+        $user = $this->getUser();
+        $votes = null;
+        $matchingVotes = array();
+        if($user != null) {
+            $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                                   ->findVoteByUserAndPosts($user, $posts);
+            foreach($votes as $vote){
+                $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
+            }
         }
+        $totalPage = $postRepository->countFreshPosts($nsfw);
 
-        $vote = $em->getRepository('TafrikaPostBundle:Vote');
-        $votes=$vote->findFresh($postPerPage,$page,$user,$array);
-        //die($votes->getIterator()->current()->getTitle());
-
-        $totalPage = $rep->countFreshPosts($nsfw);
-        $response = new Response();
-        $response->headers->set('X-Frame-Options','Allow-From http://www.youtube.com');
-        $response->headers->set('X-Frame-Options','GOFORIT');
-        $engine = $this->container->get('templating');
-        $content = $engine->render('TafrikaPostBundle::index.html.twig',array(
+        return $this->render('TafrikaPostBundle::index.html.twig',array(
             'posts'=>$posts,
-            'votes'=>$votes,
+            'matchingVotes'=>$matchingVotes,
             'page' => $page,
             'totalPage'=>ceil($totalPage/$postPerPage)));
-        $response->setContent($content);
-        return $response;
+
     }
 
     public function loadFollowedUserPostAction($page = 1){
@@ -70,33 +61,28 @@ class GeneralController extends  Controller{
         }else{
             $nsfw = $session->get('nsfw');
         }
-        $em = $this->getDoctrine()->getManager();
-        $rep = $em->getRepository('TafrikaPostBundle:Post');
+        $entityManager = $this->getDoctrine()->getManager();
+        $rep = $entityManager->getRepository('TafrikaPostBundle:Post');
         $postPerPage = $this->container->getParameter('POST_PER_PAGE');
         $posts = $rep->findFollowedUserPosts($user,$postPerPage,$page,$nsfw);
-        $array=array();
-        $i=0;
-        foreach($posts as $x){
-            $array[$i]=$x;
-            $i++;
 
+        $votes = null;
+        $matchingVotes = array();
+        if($user != null) {
+            $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                ->findVoteByUserAndPosts($user, $posts);
+            foreach($votes as $vote){
+                $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
+            }
         }
 
-        $vote = $em->getRepository('TafrikaPostBundle:Vote');
-        $votes=$vote->findFresh($postPerPage,$page,$user,$array);
-        //die($votes->getIterator()->current()->getTitle());
         $totalPage = $rep->countFollowedUserPosts($user, $nsfw);
-        $response = new Response();
-        $response->headers->set('X-Frame-Options','Allow-From http://www.youtube.com');
-        $response->headers->set('X-Frame-Options','GOFORIT');
-        $engine = $this->container->get('templating');
-        $content = $engine->render('TafrikaPostBundle:Post:followedUsersPosts.html.twig',array(
+
+        return $this->render('TafrikaPostBundle:Post:followedUsersPosts.html.twig',array(
             'posts'=>$posts,
-            'votes'=>$votes,
+            'matchingVotes'=>$matchingVotes,
             'page' => $page,
             'totalPage'=>ceil($totalPage/$postPerPage)));
-        $response->setContent($content);
-        return $response;
     }
 
     public function changeNSFWStateAction(){
