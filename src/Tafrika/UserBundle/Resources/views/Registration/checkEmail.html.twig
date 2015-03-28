@@ -1,7 +1,19 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "::layout.html.twig" %}
 
-{% trans_default_domain 'FOSUserBundle' %}
+{% block body %}
+    <div class="jumbotron">
+        <h1>مرحبا بيك في تفريكة</h1>
+        <p>
+            فيه ليان إنزل عليه
+            {{user.email}}
+            جاك مايل للكومبت
+        </br>
+            An email has been sent to {{ user.email }}.
+            It contains an activation link you must click to activate your account.
 
-{% block fos_user_content %}
-    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
-{% endblock fos_user_content %}
+        </p>
+        <p><a class="btn btn-primary btn-lg" href="{{ path('fos_user_security_login') }}" role="button">
+                تفضل بحذانا</a></p>
+    </div>
+
+{% endblock body %}
