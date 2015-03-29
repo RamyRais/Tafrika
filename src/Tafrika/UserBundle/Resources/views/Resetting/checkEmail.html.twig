@@ -1,9 +1,14 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "::layout.html.twig" %}
 
-{% trans_default_domain 'FOSUserBundle' %}
-
-{% block fos_user_content %}
-<p>
-{{ 'resetting.check_email'|trans({'%email%': email}) }}
-</p>
-{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-5">
+            <div class="alert alert-success" role="alert" dir="rtl">
+                برا شوف المايل
+                <span dir="ltr">"{{ email }}"</span>
+                تلقا ليان إنزل عليه
+            </div>
+        </div>
+    </div>
+{% endblock body %}

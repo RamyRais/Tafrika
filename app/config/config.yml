@@ -80,6 +80,11 @@ fos_user:
             from_email:
                 address:        noreply@tafrika.com
                 sender_name:    Tafrika
+    resetting:
+        email:
+            from_email:
+                address:        noreply@tafrika.com
+                sender_name:    Tafrika
 
 hwi_oauth:
   firewall_name: main

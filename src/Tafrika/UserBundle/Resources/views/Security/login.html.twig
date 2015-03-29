@@ -13,7 +13,7 @@
                 <div class="col-md-7">
                     <input type="text" id="username" name="_username" value="{{ last_username }}" required="required"
                             class="form-control input-lg" placeholder="المفرك  / username"
-                            style="direction: rtl; text-align: right;"/></br>
+                            /></br>
                 </div>
             </div>
             <div class="row">
@@ -21,24 +21,9 @@
                 <div class="col-md-7">
                     <input type="password" id="password" name="_password"  required="required"
                            class="form-control input-lg" placeholder="كلمة السر / Password"
-                           style="direction: rtl; text-align: right;"/></br>
+                           /></br>
                 </div>
             </div>
-            <!--
-            <div class="row">
-                <div class="col-md-5"></div>
-                <div class="col-md-7">
-                    <div class="form-group">
-                        <div class="col-sm-offset-7 col-sm-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="remember_me" name="_remember_me"> Remember me
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
             <div class="row">
                 <div class="col-md-5"></div>
                 <div class="col-md-7">
@@ -56,6 +41,12 @@
                     {{ error.messageKey|trans(error.messageData, 'security') }}
                 </div>
                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+                <a href="{{ path('fos_user_resetting_request') }}" class="btn btn-info btn-lg btn-block">نسيت كلمة السر</a>
             </div>
         </div>
     </div>
