@@ -72,20 +72,25 @@ class Image extends Post
         // être déplacé afin que l'entité ne soit pas persistée dans la
         // base de données comme le fait la méthode move() de UploadedFile
         $file_path = $this->getUploadRootDir().'/'.$this->getId()."_".$this->getPath();
-        $this->file->move($this->getUploadRootDir().'/', $this->getId()."_".$this->getPath());
-        $imagine = new Imagine();
-        $image = $imagine->open($file_path);
-        $imageWidth = $image->getSize()->getWidth();
-        if($imageWidth <= 580) {
-            $imageHeight = $image->getSize()->getHeight();
-            $ratio = $imageHeight / $imageWidth;
-            $imageWidth = 580;
-            $imageHeight = $imageWidth * $ratio;
-            $image->resize(new Box($imageWidth, $imageHeight));
-            unlink($file_path);
-            $image->save($file_path);
+        if($this->file->guessExtension() != 'gif') {
+            $this->file->move($this->getUploadRootDir().'/', $this->getId()."_".$this->getPath());
+            $imagine = new Imagine();
+            $image = $imagine->open($file_path);
+            $imageWidth = $image->getSize()->getWidth();
+            if ($imageWidth <= 580) {
+                $imageHeight = $image->getSize()->getHeight();
+                $ratio = $imageHeight / $imageWidth;
+                $imageWidth = 580;
+                $imageHeight = $imageWidth * $ratio;
+                $image->resize(new Box($imageWidth, $imageHeight));
+                unlink($file_path);
+                $image->save($file_path);
+            }
+            unset($this->file);
+        }else{
+            $this->file->move($this->getUploadRootDir().'/', $this->getId()."_".$this->getPath());
         }
-        unset($this->file);
+
     }
 
     /**
