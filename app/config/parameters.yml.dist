@@ -7,13 +7,15 @@ parameters:
     database_password: ~
 
     mailer_transport:  smtp
-    mailer_host:       127.0.0.1
+    mailer_host:       ~
+    mailer_port:       ~
     mailer_user:       ~
     mailer_password:   ~
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
     POST_PER_PAGE: %POST_PER_PAGE%
+    POSTS_PER_LOAD: %POST_PER_PAGE%
     COMMENTS_PER_LOAD: %COMMENTS_PER_LOAD%
     oauth.facebook.id: ~
     oauth.facebook.secret: ~
