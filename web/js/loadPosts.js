@@ -2,7 +2,7 @@
  * Created by ramy on 18/03/15.
  */
 $(document).ready(function(){
-    $(window).scroll(function() {
+    $(window).on('scroll',function() {
         if($(window).scrollTop() == $(document).height() - $(window).height()) {
             var $link = $('#load_post_link');
             var $totalPage = $link.attr('totalPage');

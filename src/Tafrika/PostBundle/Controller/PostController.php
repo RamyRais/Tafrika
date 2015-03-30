@@ -99,6 +99,10 @@ class PostController extends Controller{
             case 'me': $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
                 ->findUsersPosts($user, $postPerPage, $page, $nsfw);
             break;
+            case 'hot':
+                $posts = $entityManager->getRepository('TafrikaPostBundle:Post')
+                    ->findHot($postPerPage, $page, $nsfw);
+            break;
             default: return new JsonResponse();
         }
 

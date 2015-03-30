@@ -1,0 +1,28 @@
+{% extends "::layout.html.twig" %}
+{% import "TafrikaPostBundle:Macros:post.html.twig" as postRender %}
+{% block body_javascripts %}
+    <div id="fb-root"></div>
+    <script src="{{ asset('js/FB_patage.js') }}"></script>
+{% endblock %}
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div id="posts">
+                {% for post in posts %}
+                    {{ postRender.postShow(post, false, matchingVotes) }}
+                {% endfor %}
+
+            </div>
+            <a id="load_post_link" href="{{ path('post_load') }}"
+               postsPerLoad="{{POSTS_PER_LOAD}}" type="hot" totalPage="{{ totalPage }}"
+               style="visibility: hidden;" > load more posts</a>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/signal.js') }}"></script>
+    <script src="{{ asset('js/loadPosts.js') }}"></script>
+    <script src="{{ asset('js/vote.js') }}"></script>
+
+{% endblock %}

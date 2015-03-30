@@ -1,8 +1,10 @@
 tafrika_index:
-    path: /{page}
-    defaults: { _controller: TafrikaPostBundle:General:Index, page: 1 }
-    requirements:
-        page: \d+
+    path: /
+    defaults: { _controller: TafrikaPostBundle:General:loadHotPosts }
+
+tafrika_freshk:
+    path: /freshk
+    defaults: { _controller: TafrikaPostBundle:General:index }
 
 Tafrika_status:
     resource: "@TafrikaPostBundle/Resources/config/routing/status.yml"

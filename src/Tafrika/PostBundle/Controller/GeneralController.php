@@ -14,7 +14,8 @@ use Tafrika\PostBundle\Entity\Post ;
 
 class GeneralController extends  Controller{
 
-    public function indexAction($page = 1){
+    public function indexAction(){
+        $page = 1;
         $session = $this->get('request')->getSession();
         if($session->get('nsfw')===null){
             $nsfw = 1;
@@ -138,5 +139,38 @@ class GeneralController extends  Controller{
             }
         }
         return new Response("signal added");
+    }
+
+    public function loadHotPostsAction(){
+        $page = 1;// 1 is page one
+        $session = $this->get('request')->getSession();
+        if($session->get('nsfw')===null){
+            $nsfw = 1;
+            $session->set('nsfw',$nsfw);
+        }else{
+            $nsfw = $session->get('nsfw');
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $postRepository = $entityManager->getRepository('TafrikaPostBundle:Post');
+        $postPerPage = $this->container->getParameter('POST_PER_PAGE');
+        $posts = $postRepository->findHot($postPerPage, $page, $nsfw);
+
+        $user = $this->getUser();
+        $votes = null;
+        $matchingVotes = array();
+        if($user != null) {
+            $votes = $entityManager->getRepository('TafrikaPostBundle:Vote')
+                ->findVoteByUserAndPosts($user, $posts);
+            foreach($votes as $vote){
+                $matchingVotes[$vote->getPost()->getId()] = $vote->getVote();
+            }
+        }
+        $totalPage = $postRepository->countFreshPosts($nsfw);
+
+        return $this->render('TafrikaPostBundle::index.html.twig',array(
+            'posts'=>$posts,
+            'matchingVotes'=>$matchingVotes,
+            'page' => $page,
+            'totalPage'=>ceil($totalPage/$postPerPage)));
     }
 }

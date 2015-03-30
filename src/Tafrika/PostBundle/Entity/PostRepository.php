@@ -28,6 +28,33 @@ class PostRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findHot($postPerPage, $page, $nsfw){
+        if($page<1){
+            throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
+        }
+        $averageLikes = $this->createQueryBuilder('p');
+        $averageLikes->select($averageLikes->expr()->avg('p.likes'))
+                     ->orderBy('p.createdAt','DESC')
+                     ->setFirstResult(0)
+                     ->setMaxResults(100);
+        $likes = $averageLikes->getQuery()->getScalarResult();
+        $query = $this->createQueryBuilder('p');
+        $query->select('p');
+        $query->addSelect('(SELECT count(c) FROM Tafrika\PostBundle\Entity\Comment
+                            AS c WHERE c.post = p) AS HIDDEN mycount ');
+        if($nsfw==1) {
+            $query->where('p.NSFW = :nsfw')
+                ->setParameter('nsfw', 0);
+        }
+        $query->andWhere('p.likes >= :averageLikes')
+              ->setParameter('averageLikes',$likes)
+              ->orderBy('p.likes','DESC')
+              ->addOrderBy('mycount', 'DESC')
+              ->addOrderBy('p.createdAt','DESC');
+        $query->setFirstResult( ($page - 1)* $postPerPage);
+        $query->setMaxResults($postPerPage);
+        return $query->getQuery()->getResult();
+    }
     public function findFollowedUserPosts($user, $postPerPage, $page, $nsfw){
         if($page<1){
             throw new \InvalidArgumentException("L'argument page ne peut pas être inférieur à 1");
