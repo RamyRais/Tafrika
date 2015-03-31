@@ -51,11 +51,14 @@ class UserProvider extends FOSUBUserProvider
         $user = $this->userManager->createUser();
         $this->updateUserByOAuthUserResponse($user, $response);
         // set default values taken from OAuth sign-in provider account
-        if (null !== $email = $response->getEmail()) {
-            $user->setEmail($email);
-        }
         if (null === $this->userManager->findUserByUsername($response->getNickname())) {
             $user->setUsername($response->getNickname());
+        }
+        if (null !== $email = $response->getEmail()) {
+            $user->setEmail($email);
+        }else{
+            $email = preg_replace('/\s+/','_',$response->getNickname());
+            $user->setEmail($email.'@facebook.com');
         }
         $user->setEnabled(true);
         return $user;
