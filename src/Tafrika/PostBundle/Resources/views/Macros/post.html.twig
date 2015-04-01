@@ -67,7 +67,7 @@
     <div class="panel-footer">
         <div class="row">
             <div class="pull-left">
-                <span id="count{{ post.id }}">{{ post.likes }} likes</span>
+                <span id="count{{ post.id }}" style="padding-left: 5px">{{ post.likes }} likes</span>
             <div class="btn-group" role="group" aria-label="likes-buttons">
                 {% if post.id in votes|keys %}
                     {% if attribute(votes, post.id) == 1  %}
@@ -102,7 +102,7 @@
             </div>
             </div>
 
-            <div class="pull-right" >
+            <div class="pull-right" style="padding-right: 5px;">
                 <button class="btn btn-social-icon btn-facebook">
                     <i class="fa fa-facebook"></i>
                 </button>

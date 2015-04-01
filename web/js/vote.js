@@ -15,14 +15,18 @@ $(document).ready(function(){
                 console.log(data);
                 var $child = $("i",$this);
                 var $likes= $('#count'.concat($postId));
-                $likes.text(data.concat(' likes'));
-                if( $child.hasClass('fa-thumbs-o-up')){
-                    $child.removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
-                }else if($child.hasClass('fa-thumbs-up')) {
-                    $child.removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+                if(/^\+?(0|[1-9]\d*)$/.test(data)) {
+                    $likes.text(data.concat(' likes'));
+                    if ($child.hasClass('fa-thumbs-o-up')) {
+                        $child.removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+                    } else if ($child.hasClass('fa-thumbs-up')) {
+                        $child.removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+                    }
+                    $("i", '.change_state_down_'.concat($postId)).removeClass('fa-thumbs-down')
+                        .addClass('fa-thumbs-o-down')
+                }else{
+                    //TODO try to load sign in page with magnific popup
                 }
-                $("i",'.change_state_down_'.concat($postId)).removeClass('fa-thumbs-down')
-                    .addClass('fa-thumbs-o-down')
             }
         })
     });
@@ -38,14 +42,16 @@ $(document).ready(function(){
             success: function(data) {
                 var $child = $("i",$this);
                 var $likes= $('#count'.concat($postId));
-                $likes.text(data.concat(' likes'));
-                if( $child.hasClass('fa-thumbs-o-down')){
-                    $child.removeClass('fa-thumbs-o-down').addClass('fa-thumbs-down');
-                }else if($child.hasClass('fa-thumbs-down')) {
-                    $child.removeClass('fa-thumbs-down').addClass('fa-thumbs-o-down');
+                if(/^\+?(0|[1-9]\d*)$/.test(data)) {
+                    $likes.text(data.concat(' likes'));
+                    if ($child.hasClass('fa-thumbs-o-down')) {
+                        $child.removeClass('fa-thumbs-o-down').addClass('fa-thumbs-down');
+                    } else if ($child.hasClass('fa-thumbs-down')) {
+                        $child.removeClass('fa-thumbs-down').addClass('fa-thumbs-o-down');
+                    }
+                    $("i", '.change_state_up_'.concat($postId)).removeClass('fa-thumbs-up')
+                        .addClass('fa-thumbs-o-up')
                 }
-                $("i",'.change_state_up_'.concat($postId)).removeClass('fa-thumbs-up')
-                    .addClass('fa-thumbs-o-up')
             }
         })
     });
