@@ -11,9 +11,6 @@
 
 {% macro  postHead(post, onPostPage)%}
     <div class="panel-heading">
-        {% import "TafrikaPostBundle:Macros:signal.html.twig" as signal %}
-        {{ signal.signalButton(post.id) }}
-
         {% if app.user and onPostPage %}
             {% if app.user.id == post.user.id %}
                 {% if post._type == "STATUS" %}
@@ -66,9 +63,9 @@
 {% macro postFooter(post, votes) %}
     <div class="panel-footer">
         <div class="row">
-            <div class="pull-left">
-                <span id="count{{ post.id }}" style="padding-left: 5px">{{ post.likes }} likes</span>
-            <div class="btn-group" role="group" aria-label="likes-buttons">
+            <div class="pull-left" style="margin-left: 15px">
+                <span id="count{{ post.id }}">{{ post.likes }} likes</span>
+            <div class="btn-group" role="group" aria-label="likes-buttons" style="margin-left: 10px;">
                 {% if post.id in votes|keys %}
                     {% if attribute(votes, post.id) == 1  %}
                         <button id="button_up" postId="{{ post.id }}" path="{{ path('vote_up') }}"
@@ -100,6 +97,8 @@
                     </button>
                 {% endif %}
             </div>
+                {% import "TafrikaPostBundle:Macros:signal.html.twig" as signal %}
+                {{ signal.signalButton(post.id) }}
             </div>
 
             <div class="pull-right" style="padding-right: 5px;">
