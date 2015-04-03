@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap-social.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap-toggle.min.css')}}" >
+    <link rel="stylesheet" href="{{ asset('css/magnific-popup.css')}}" >
     {% block stylesheets %}{% endblock %}
     <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -89,6 +90,8 @@
     </br></br></br></br>
     {% block body %}{% endblock %}
 </div>
+
+<script src="{{ asset('js/jquery.magnific-popup.js') }}"></script>
 <script src="{{ asset('js/nsfw.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
@@ -103,6 +106,8 @@
     ga('send', 'pageview');
 
 </script>
+<div id="fb-root"></div>
+<script src="{{ asset('js/FB_partage.js') }}"></script>
 {% block foot_javascripts %}
 
 {% endblock %}

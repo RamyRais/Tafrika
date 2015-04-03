@@ -102,15 +102,9 @@
             </div>
 
             <div class="pull-right" style="padding-right: 5px;">
-                <button class="btn btn-social-icon btn-facebook">
-                    <i class="fa fa-facebook"></i>
-                </button>
-                <button  class="btn btn-social-icon btn-google-plus">
-                    <i class="fa fa-google-plus"></i>
-                </button>
+                {{ _self.fbShareButton(post) }}
+                {{ _self.googleShareButton(post) }}
             </div>
-
-
         </div>
     </div>
 {% endmacro %}
@@ -133,4 +127,27 @@
     <div>
         {{ status.content }}
     </div>
+{% endmacro %}
+
+{% macro fbShareButton(post) %}
+    <a id="fb_share_button" class="btn btn-social-icon btn-facebook"
+        name="{{ post.title }}"
+        link="http://tafrika.com{{ path('post_show', {'post_slug': post.slug})}}"
+    {% if post._type == "STATUS" %}
+        caption={{ post.content }}
+    {% elseif post._type == "IMAGE" %}
+        picture="http://tafrika.com/web/{{ post.getWebPath }}"
+    {% elseif post._type == "VIDEO" %}
+        source={{ post.url }}
+    {% endif %}
+        ><i class="fa fa-facebook"></i>
+    </a>
+{% endmacro %}
+
+{% macro googleShareButton(post) %}
+    <a class="btn btn-social-icon btn-google-plus"
+        href="https://plus.google.com/share?url=http://tafrika.com{{ path('post_show', {'post_slug': post.slug})}}"
+       onclick="javascript:window.open(this.href,
+  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+        <i class="fa fa-google-plus"></i></a>
 {% endmacro %}
