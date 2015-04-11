@@ -14,7 +14,7 @@ window.fbAsyncInit = function() {
 }());
 
 $(document).ready(function(){
-    $('#fb_share_button').click(function(e){
+    $('body').on('click','#fb_share_button',function(e){
         e.preventDefault();
         var $this = $(this);
         var $name = $this.attr('name');
