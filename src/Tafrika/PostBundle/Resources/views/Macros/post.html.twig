@@ -51,7 +51,7 @@
                     {% else %}
                         href="{{ path('user_profile', {'page': 1,'user_id': post.user.id}) }}"
                     {% endif %}
-                > {{ post.user.username }} </a> on {{ post.createdAt|createdAt('F d, Y') }}
+                > {{ post.user.username }} </a> on {{ post.createdAt|date('F d, Y') }}
                 </br> {% if app.user == post.user%}
                         <a href="{{ path('post_delete', {'post_id': post.id}) }}">Delete Post</a>
                        {% endif%}
@@ -88,7 +88,10 @@
                     {% endif %}
                 {% else %}
                     <button id="button_up" postId="{{ post.id }}" path="{{ path('vote_up') }}"
-                            type="button" class="btn btn-default change_state_up_{{ post.id }}">
+                            type="button" class="btn btn-default change_state_up_{{ post.id }}"
+                            {% if not app.user %}
+                        href="{{ path('fos_user_security_login') }}"
+                            {% endif %}>
                         <i class="fa fa-thumbs-o-up"></i>
                     </button>
                     <button id="button_down" postId="{{ post.id }}" path="{{ path('vote_down') }}"
