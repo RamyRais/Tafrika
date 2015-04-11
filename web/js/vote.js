@@ -12,10 +12,9 @@ $(document).ready(function(){
             type: 'POST',
             data: { 'post_id' : $postId },
             success: function(data) {
-                console.log(data);
                 var $child = $("i",$this);
                 var $likes= $('#count'.concat($postId));
-                if(/^\+?(0|[1-9]\d*)$/.test(data)) {
+                if(/^\+?(0|[1-9]\d*)$/.test(data)){//test si le résultat est un numéro ce qui signifie requete réussi
                     $likes.text(data.concat(' likes'));
                     if ($child.hasClass('fa-thumbs-o-up')) {
                         $child.removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
@@ -25,7 +24,15 @@ $(document).ready(function(){
                     $("i", '.change_state_down_'.concat($postId)).removeClass('fa-thumbs-down')
                         .addClass('fa-thumbs-o-down')
                 }else{
-                    //TODO try to load sign in page with magnific popup
+                    $.magnificPopup.open({
+                        items: {
+                            src: $('#hidden_login_link').attr('href')
+                        },
+                        type: 'ajax',
+                        overflowY: 'scroll',
+                        showCloseBtn: false,
+                        closeOnBgClick: false
+                    });
                 }
             }
         })
@@ -42,7 +49,7 @@ $(document).ready(function(){
             success: function(data) {
                 var $child = $("i",$this);
                 var $likes= $('#count'.concat($postId));
-                if(/^\+?(0|[1-9]\d*)$/.test(data)) {
+                if(/^\+?(0|[1-9]\d*)$/.test(data)){ //test si le résultat est un numéro ce qui signifie requete réussi
                     $likes.text(data.concat(' likes'));
                     if ($child.hasClass('fa-thumbs-o-down')) {
                         $child.removeClass('fa-thumbs-o-down').addClass('fa-thumbs-down');
@@ -51,6 +58,16 @@ $(document).ready(function(){
                     }
                     $("i", '.change_state_up_'.concat($postId)).removeClass('fa-thumbs-up')
                         .addClass('fa-thumbs-o-up')
+                }else{
+                    $.magnificPopup.open({
+                        items: {
+                            src: $('#hidden_login_link').attr('href')
+                        },
+                        type: 'ajax',
+                        overflowY: 'scroll',
+                        showCloseBtn: false,
+                        closeOnBgClick: false
+                    });
                 }
             }
         })

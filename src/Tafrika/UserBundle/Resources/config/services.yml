@@ -1,5 +1,6 @@
 parameters:
 #    tafrika_user.example.class: Tafrika\UserBundle\Example
+    authentication_handler: Tafrika\UserBundle\Handler\AuthenticationHandler
 
 services:
     tafrika_user.registration.form.type:
@@ -15,3 +16,9 @@ services:
     tafrika.oauth.user_provider:
         class: Tafrika\UserBundle\OAuth\UserProvider
         arguments: [@fos_user.user_manager, {facebook: facebook_id, google: google_id}]
+
+    authentication_handler:
+        class:  %authentication_handler%
+        arguments:  [@router]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
