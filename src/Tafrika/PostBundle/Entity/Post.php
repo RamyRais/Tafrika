@@ -17,6 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *                  "image" = "Image",
  *                  "video" = "Video",
  *                  "status" = "Status"})
+ * @ORM\MappedSuperclass
  */
 class Post
 {
