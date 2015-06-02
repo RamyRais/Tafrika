@@ -17,3 +17,11 @@
     <script src="{{ asset('js/signal.js') }}"></script>
     <script src="{{ asset('js/vote.js') }}"></script>
 {% endblock %}
+{% block foot_javascripts %}
+    <script type="text/javascript">
+        if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "fr" , startMode: "off" } ))
+        {
+            Yamli.yamlify( "tafrika_postbundle_comment_content", { settingsPlacement: "inside" } );
+        }
+    </script>
+{% endblock %}

@@ -72,3 +72,12 @@
     {{ form_errors(form) }}
 </form>
 {% endblock %}
+{% block foot_javascripts %}
+<script type="text/javascript">
+    if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "fr" , startMode: "off" } ))
+    {
+        Yamli.yamlify( "tafrika_postbundle_status_title", { settingsPlacement: "inside" } );
+        Yamli.yamlify( "tafrika_postbundle_status_content", { settingsPlacement: "inside" } );
+    }
+</script>
+{% endblock %}

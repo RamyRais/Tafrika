@@ -71,3 +71,11 @@
     {{ form_errors(form) }}
 </form>
 {% endblock %}
+{% block foot_javascripts %}
+    <script type="text/javascript">
+        if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "fr" , startMode: "off" } ))
+        {
+            Yamli.yamlify("tafrika_postbundle_video_title", { settingsPlacement: "inside" } );
+        }
+    </script>
+{% endblock %}

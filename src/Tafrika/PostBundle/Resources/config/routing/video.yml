@@ -9,7 +9,7 @@ video_show:
         video_id: \d+
 
 video_edit:
-    path: /{video_id}
+    path: /{video_id}/edit
     defaults: { _controller: TafrikaPostBundle:Video:editVideo }
     requirements:
         video_id: \d+

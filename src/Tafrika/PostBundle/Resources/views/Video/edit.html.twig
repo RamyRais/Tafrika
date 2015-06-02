@@ -42,3 +42,11 @@
         {{ form_errors(form) }}
     </div>
 {% endblock %}
+{% block foot_javascripts %}
+    <script type="text/javascript">
+        if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "fr" , startMode: "offOrUserDefault" } ))
+        {
+            Yamli.yamlify("tafrika_postbundle_editvideo_title", { settingsPlacement: "inside" } );
+        }
+    </script>
+{% endblock %}
