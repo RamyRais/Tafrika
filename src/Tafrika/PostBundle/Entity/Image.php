@@ -39,7 +39,9 @@ class Image extends Post
      * @var UploadedFile
      * @Assert\Image(
      *          maxSize = "2M",
-     *          maxSizeMessage="تصوير كبيرة برشا لحد لأقصى 2 ميجا")
+     *          maxSizeMessage="تصوير كبيرة برشا لحد لأقصى 2 ميجا",
+     *          mimeTypes = {"image/jpeg", "image/gif", "image/png"},
+     *          mimeTypesMessage = "الفرما المقبولة JPEG، PNG، GIF")
      */
     private $file;
 
@@ -89,6 +91,23 @@ class Image extends Post
             unset($this->file);
         }else{
             $this->file->move($this->getUploadRootDir().'/', $this->getId()."_".$this->getPath());
+//            $api = new Api("A7GkUuBl1fTdUXfVafMSLnGH7jDMomN4YpCcQJ_KmFCBIkdhClweHp_1QdrQE2V87SyzciEpCc5j0XhJG4Y4qA");
+//            $api->convert([
+//                "input" => "upload",
+//                "output" => [
+//                    "ftp" => [
+//                        "host" => "ftp.cluster011.ovh.net",
+//                        "user" => "tafrikacna",
+//                        "password" => "JvPqyujUaRxA",
+//                        "path" => $file_path,
+//                    ],
+//                ],
+//                "inputformat" => "gif",
+//                "outputformat" => "mp4",
+//                "file" => fopen($file_path, 'r'),
+//            ])
+//                ->wait()
+//                ->download();
         }
 
     }
