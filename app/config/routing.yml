@@ -1,3 +1,7 @@
+tafrika_admin:
+    resource: "@TafrikaAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
 tafrika_post:
     resource: "@TafrikaPostBundle/Resources/config/routing.yml"
     prefix:   /

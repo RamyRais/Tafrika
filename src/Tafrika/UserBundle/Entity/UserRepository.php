@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    public function getUserList($userPerPage, $page){
+        if($page<1){
+            throw new \InvalidArgumentException('L\'argument $page ne peut être inférieur à 1 (valeur : "'.$page.'").');
+        }
+        $query = $this->createQueryBuilder('u')
+            ->getQuery();
+
+        $query->setFirstResult( ($page-1)*$userPerPage );
+        $query->setMaxResults($userPerPage);
+        return new Paginator($query);
+    }
 }

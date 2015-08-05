@@ -1,0 +1,5 @@
+list_user:
+    pattern: admin\users\lists\{page}
+    defaults: { _controller: TafrikaAdminBundle:UserAdmin:listUser, page: 1 }
+    requirements:
+        page: \d+

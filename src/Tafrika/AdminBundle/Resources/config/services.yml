@@ -1,0 +1,7 @@
+parameters:
+#    tafrika_admin.example.class: Tafrika\AdminBundle\Example
+
+services:
+#    tafrika_admin.example:
+#        class: %tafrika_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
